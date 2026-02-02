@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlTag">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUTURE HOME | ARCHITECT COMMAND</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/ace.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700&family=Noto+Sans+Arabic:wght@100;300;400;700&display=swap');
+        
+        :root {
+            --gold: #c5a059;
+            --obsidian: #050505;
+            --glass: rgba(10, 10, 10, 0.98);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #000;
+            color: #fff;
+            margin: 0;
+            overflow-x: hidden;
+            height: 100vh;
+        }
+
+        /* --- THE SCRIPT EVOLUTION PANEL --- */
+        #architectPanel {
+            position: fixed;
+            inset: 0;
+            background: var(--obsidian);
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            padding: 40px;
+        }
+
+        #codeEditor {
+            flex: 1;
+            width: 100%;
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            font-size: 14px;
+            margin: 20px 0;
+        }
+
+        /* --- CINEMATIC INTERFACE --- */
+        .sidebar {
+            position: fixed;
+            top: 0; bottom: 0; width: 440px;
+            background: var(--glass);
+            border-inline-end: 1px solid rgba(255,255,255,0.05);
+            padding: 80px 50px;
+            z-index: 1000;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #appScreen {
+            margin-inline-start: 440px;
+            padding: 100px;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, transparent, #000);
+        }
+
+        .lux-input {
+            width: 100%; background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08); padding: 22px;
+            color: white; margin-bottom: 20px; outline: none;
+        }
+
+        .btn-gold {
+            width: 100%; padding: 22px; background: var(--gold);
+            color: black; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 4px; border: none; cursor: pointer;
+        }
+
+        #bg-video-wrap {
+            position: fixed; inset: 0; z-index: -1;
+            filter: brightness(0.2);
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body id="bodyTag">
+
+    <div id="architectPanel">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-gold tracking-[10px] uppercase text-xl font-bold">Script Architect</h1>
+                <p class="text-gray-500 text-[10px] mt-2">REAL-TIME SYSTEM MODIFICATION PROTOCOL</p>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="saveEvolution()" class="bg-gold text-black px-10 py-3 font-bold text-xs uppercase tracking-widest">Deploy Script</button>
+                <button onclick="toggleArchitect(false)" class="border border-white/20 px-10 py-3 text-xs uppercase">Close</button>
+            </div>
+        </div>
+        <div id="codeEditor"></div>
+    </div>
+
+    <div class="sidebar">
+        <div class="text-gold tracking-[15px] font-bold text-2xl mb-20">FUTURE HOME</div>
+        
+        <div id="authBox">
+            <button onclick="loginGoogle()" class="w-full border border-white/10 p-5 mb-4 text-[10px] uppercase tracking-widest hover:bg-white hover:text-black transition">Continue with Google</button>
+            <div class="py-8 text-center text-[8px] text-gray-600 uppercase tracking-[5px]">Or Access Key</div>
+            <input type="email" id="email" class="lux-input" placeholder="ID">
+            <input type="password" id="password" class="lux-input" placeholder="KEY">
+            <button id="btnLogin" class="btn-gold">Authorize</button>
+        </div>
+
+        <div id="masterMenu" class="hidden flex-1 flex flex-col">
+            <div class="bg-gold/5 border border-gold/20 p-6 mb-10">
+                <p class="text-[9px] text-gold uppercase tracking-[4px] mb-4">Core Systems Ready</p>
+                <button onclick="toggleArchitect(true)" class="w-full bg-white text-black py-3 text-[9px] font-bold uppercase">Modify Website Script</button>
+            </div>
+            
+            <nav class="space-y-4">
+                <button onclick="openListingForm()" class="w-full border border-white/10 p-5 text-[10px] uppercase tracking-widest text-left hover:border-gold">Add New Asset</button>
+                <button class="w-full border border-white/10 p-5 text-[10px] uppercase tracking-widest text-left hover:border-gold">Vault Statistics</button>
+            </nav>
+
+            <button onclick="logout()" class="mt-auto text-red-900 text-[9px] uppercase tracking-widest font-bold">Terminate Session</button>
+        </div>
+    </div>
+
+    <main id="appScreen" class="hidden">
+        <header class="flex justify-between items-end border-b border-white/5 pb-10 mb-20">
+            <h2 id="welcomeMsg" class="text-7xl font-thin tracking-tighter uppercase">Initializing...</h2>
+        </header>
+        <div id="assetGrid" class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8"></div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCkKmG3XSEDC2u_-HZYze8clabp6JLKf1g",
+            authDomain: "futurehomeapp-fdad7.firebaseapp.com",
+            projectId: "futurehomeapp-fdad7",
+            storageBucket: "futurehomeapp-fdad7.appspot.com",
+            messagingSenderId: "70607637960",
+            appId: "1:70607637960:web:f11bbd6a3bc53cb4ab44fd"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+        const MASTERS = ["mohammedtaha9o.elghawaby@gmail.com"];
+
+        // ACE EDITOR SETUP
+        const editor = ace.edit("codeEditor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/javascript");
+
+        /* --- THE ARCHITECT ENGINE: DYNAMIC CODE INJECTION --- */
+
+        window.toggleArchitect = async (show) => {
+            if(show) {
+                // Fetch current evolution from Cloud
+                const evolution = await getDoc(doc(db, "system", "evolution"));
+                editor.setValue(evolution.exists() ? evolution.data().script : "// Start writing evolution script...");
+                document.getElementById('architectPanel').style.display = 'flex';
+            } else {
+                document.getElementById('architectPanel').style.display = 'none';
+            }
+        };
+
+        window.saveEvolution = async () => {
+            const newCode = editor.getValue();
+            await setDoc(doc(db, "system", "evolution"), {
+                script: newCode,
+                updatedBy: auth.currentUser.email,
+                timestamp: new Date()
+            });
+            alert("SYSTEM EVOLUTION DEPLOYED. RELOADING PROTOCOLS.");
+            location.reload();
+        };
+
+        // --- AUTHENTICATION FLOW ---
+
+        window.loginGoogle = () => signInWithPopup(auth, provider);
+        
+        window.logout = () => signOut(auth).then(() => location.reload());
+
+        document.getElementById('btnLogin').onclick = () => {
+            signInWithEmailAndPassword(auth, email.value, password.value).catch(e => alert(e.message));
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const isM = MASTERS.includes(user.email.toLowerCase());
+                document.getElementById('authBox').classList.add('hidden');
+                document.getElementById('masterMenu').classList.remove('hidden');
+                document.getElementById('appScreen').classList.remove('hidden');
+                document.getElementById('welcomeMsg').innerText = isM ? "Master Architect" : "Verified Agent";
+                
+                // Fetch and Inject the Evolution Script
+                const evolution = await getDoc(doc(db, "system", "evolution"));
+                if (evolution.exists()) {
+                    const dynamicScript = document.createElement('script');
+                    dynamicScript.text = evolution.data().script;
+                    document.body.appendChild(dynamicScript);
+                    console.log("EVOLUTION SCRIPT INJECTED SUCCESSFULLY.");
+                }
+            }
+        });
+
+        // --- BOOTSTRAP UI DATA ---
+        function initGrid() {
+            onSnapshot(query(collection(db, 'properties'), orderBy('createdAt', 'desc')), (snap) => {
+                const grid = document.getElementById('assetGrid');
+                grid.innerHTML = '';
+                snap.forEach(d => {
+                    const p = d.data();
+                    grid.innerHTML += `
+                        <div class="border border-white/5 p-8 bg-white/5 hover:border-gold transition cursor-pointer">
+                            <span class="text-gold text-[8px] tracking-[5px] uppercase font-bold">${p.location}</span>
+                            <h3 class="text-2xl font-light mt-4 uppercase">${p.title}</h3>
+                            <p class="mt-10 font-bold">EGP ${Number(p.price).toLocaleString()}</p>
+                        </div>
+                    `;
+                });
+            });
+        }
+        initGrid();
+
+    </script>
+</body>
+</html>
