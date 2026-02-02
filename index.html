@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FUTURE HOME | SOVEREIGN V2</title>
+    <title>FUTURE HOME | RESTORED SOVEREIGN</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,160 +15,116 @@
         :root {
             --gold: #c5a059;
             --obsidian: #050505;
-            --transition-fluid: 0.8s cubic-bezier(0.2, 1, 0.3, 1);
-            --z-shield: 20000;
-            --z-cookie: 30000;
-            --z-pov: 10000;
+            --transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body { font-family: 'Montserrat', sans-serif; background: #000; color: var(--gold); overflow: hidden; height: 100vh; margin: 0; }
         body.rtl { font-family: 'Noto Sans Arabic', sans-serif; direction: rtl; }
 
-        /* --- THE SECURITY SHIELD LAYER --- */
-        #security-shield {
-            position: fixed; inset: 0; z-index: var(--z-shield); background: #000;
-            display: flex; align-items: center; justify-content: center; flex-direction: column;
-            transition: opacity 1.5s ease, visibility 1.5s;
+        /* --- UI CORE --- */
+        .sidebar {
+            position: fixed; top: 0; left: 0; bottom: 0; width: 380px;
+            background: rgba(10,10,10,0.95); border-right: 1px solid rgba(197,160,89,0.1);
+            z-index: 1000; padding: 60px 40px; transition: var(--transition);
         }
+        body.rtl .sidebar { left: auto; right: 0; border-right: none; border-left: 1px solid rgba(197,160,89,0.1); }
+        
+        #main-viewport { margin-left: 380px; padding: 80px; height: 100vh; overflow-y: auto; }
+        body.rtl #main-viewport { margin-left: 0; margin-right: 380px; }
 
-        /* --- THE COOKIE VAULT (HIGHEST PRIORITY) --- */
+        /* --- BUTTONS (RE-STABILIZED) --- */
+        .btn-minimal {
+            border: 1px solid rgba(197, 160, 89, 0.4); background: transparent; color: var(--gold);
+            padding: 12px; font-size: 10px; text-transform: uppercase; letter-spacing: 3px;
+            cursor: pointer; transition: 0.3s; font-weight: 700; width: 100%; display: block; text-align: center;
+        }
+        .btn-minimal:hover { background: var(--gold); color: #000; }
+
+        /* --- SECURITY LAYERS --- */
+        #security-shield {
+            position: fixed; inset: 0; z-index: 9999; background: #000;
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+        }
         #cookie-popup {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 90%; max-width: 450px; background: rgba(15,15,15,0.98); 
-            backdrop-filter: blur(30px); border: 1px solid var(--gold); 
-            padding: 50px; z-index: var(--z-cookie);
-            display: none; box-shadow: 0 0 100px rgba(0,0,0,1), 0 0 40px rgba(197,160,89,0.2);
-            text-align: center;
-        }
-
-        /* --- CLEAN BUTTONS --- */
-        .btn-minimal {
-            border: 1px solid rgba(197, 160, 89, 0.3); background: transparent; color: var(--gold);
-            padding: 12px 24px; font-size: 10px; text-transform: uppercase; letter-spacing: 4px;
-            cursor: pointer; transition: var(--transition-fluid); font-weight: 700;
-        }
-        .btn-minimal:hover { background: var(--gold); color: #000; border-color: var(--gold); box-shadow: 0 0 20px var(--gold); }
-
-        /* --- SIDEBAR & VIEWPORT ENGINE --- */
-        .sidebar {
-            position: fixed; top: 0; left: 0; bottom: 0; width: 420px;
-            background: rgba(10,10,10,0.9); backdrop-filter: blur(50px);
-            border-right: 1px solid rgba(197, 160, 89, 0.1);
-            z-index: 1000; padding: 100px 50px; transition: var(--transition-fluid);
-        }
-        body.rtl .sidebar { left: auto; right: 0; border-right: none; border-left: 1px solid rgba(197, 160, 89, 0.1); }
-        
-        #main-viewport { margin-left: 420px; padding: 120px; height: 100vh; overflow-y: auto; transition: 1s; }
-        body.rtl #main-viewport { margin-left: 0; margin-right: 420px; }
-
-        /* --- POV SYSTEM --- */
-        #pov-indicator {
-            position: fixed; top: 40px; left: 50%; transform: translateX(-50%);
-            z-index: var(--z-pov); padding: 12px 50px; background: var(--gold); color: #000;
-            font-weight: 900; font-size: 11px; letter-spacing: 6px; text-transform: uppercase;
-            display: none; box-shadow: 0 0 40px rgba(197,160,89,0.4);
+            width: 400px; background: #0a0a0a; border: 2px solid var(--gold);
+            padding: 40px; z-index: 10000; display: none; text-align: center;
         }
 
         .asset-card {
-            background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(197, 160, 89, 0.05);
-            padding: 45px; transition: 0.6s; cursor: pointer;
+            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(197, 160, 89, 0.1);
+            padding: 30px; cursor: pointer; transition: 0.3s;
         }
-        .asset-card:hover { border-color: var(--gold); background: rgba(197,160,89,0.04); transform: translateY(-5px); }
+        .asset-card:hover { border-color: var(--gold); background: rgba(197, 160, 89, 0.05); }
 
+        .modal {
+            position: fixed; inset: 0; z-index: 11000; background: rgba(0,0,0,0.95);
+            display: none; align-items: center; justify-content: center; padding: 20px;
+        }
         .hidden { display: none !important; }
     </style>
 </head>
 <body id="bodyRoot">
 
     <div id="security-shield">
-        <h1 class="text-gold tracking-[20px] font-black uppercase mb-6">Securing Node</h1>
-        <div class="w-32 h-[1px] bg-gold/10 relative overflow-hidden">
-            <div id="shield-bar" class="absolute inset-0 bg-gold -translate-x-full transition-transform duration-1000"></div>
-        </div>
-        <p id="security-status" class="text-[9px] tracking-[6px] uppercase mt-8 opacity-40">Verifying Identity...</p>
+        <h1 class="text-gold tracking-[10px] font-black uppercase">SYSTEM LOCK</h1>
+        <p id="security-status" class="text-[8px] tracking-[5px] uppercase mt-4 opacity-50">Checking Signatures...</p>
     </div>
 
     <div id="cookie-popup">
-        <div class="mb-10 text-gold"><i class="fas fa-shield-halved text-4xl"></i></div>
-        <h4 data-en="SECURITY HANDSHAKE" data-ar="المصافحة الأمنية" class="text-[12px] font-black tracking-widest mb-6">SECURITY HANDSHAKE</h4>
-        <p data-en="This terminal requires a localized signature cookie to verify your IP and device integrity." 
-           data-ar="تطلب هذه المحطة ملف تعريف ارتباط بتوقيع محلي للتحقق من سلامة عنوان IP وجهازك." 
-           class="text-[10px] leading-relaxed opacity-60 mb-10"></p>
-        <button onclick="acceptSecurityCookies()" data-en="INITIALIZE SIGNATURE" data-ar="بدء التوقيع" class="btn-minimal w-full">INITIALIZE SIGNATURE</button>
+        <h4 class="text-gold font-black tracking-widest mb-4">SECURITY COOKIE REQUIRED</h4>
+        <p class="text-[10px] opacity-70 mb-8">Initialize the local signature to access the Sovereign Node.</p>
+        <button onclick="acceptSecurityCookies()" class="btn-minimal">INITIALIZE</button>
     </div>
 
-    <div id="pov-indicator">POV ACTIVE</div>
-
-    <div class="fixed top-12 right-12 z-[11000] flex gap-6">
-        <button onclick="toggleLang('en')" class="btn-minimal !px-4 !py-2 !text-[8px]">EN</button>
-        <button onclick="toggleLang('ar')" class="btn-minimal !px-4 !py-2 !text-[8px]">AR</button>
-    </div>
-
-    <div class="fixed inset-0 -z-10 bg-black">
-        <div id="bg-slide" class="absolute inset-0 opacity-25 bg-center bg-cover transition-opacity duration-1000" 
-             style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2000')"></div>
+    <div class="fixed top-8 right-8 z-[5000] flex gap-2">
+        <button onclick="toggleLang('en')" class="btn-minimal !w-12">EN</button>
+        <button onclick="toggleLang('ar')" class="btn-minimal !w-12">AR</button>
     </div>
 
     <aside class="sidebar">
-        <div class="brand text-center mb-24">
-            <h1 data-en="FUTURE HOME" data-ar="منزل المستقبل" class="text-2xl font-black tracking-[15px] uppercase">FUTURE HOME</h1>
+        <h1 data-en="FUTURE HOME" data-ar="منزل المستقبل" class="text-center font-black tracking-[10px] mb-16">FUTURE HOME</h1>
+
+        <div id="auth-section" class="space-y-4">
+            <input type="email" id="email" class="w-full bg-white/5 border border-white/10 p-4 text-xs text-gold outline-none" placeholder="IDENTITY">
+            <input type="password" id="password" class="w-full bg-white/5 border border-white/10 p-4 text-xs text-gold outline-none" placeholder="KEY">
+            <button onclick="handleLogin()" class="btn-minimal">AUTHORIZE</button>
         </div>
 
-        <div id="auth-section" class="space-y-6">
-            <input type="email" id="email" class="w-full bg-white/5 border border-white/10 p-5 text-xs text-gold outline-none" placeholder="IDENTITY">
-            <input type="password" id="password" class="w-full bg-white/5 border border-white/10 p-5 text-xs text-gold outline-none" placeholder="KEY">
-            <button onclick="handleLogin()" data-en="AUTHORIZE" data-ar="تفويض" class="btn-minimal w-full">AUTHORIZE</button>
+        <div id="menu-master" class="hidden space-y-6 mt-10">
+            <button onclick="openArchitect()" class="btn-minimal">ARCHITECT PANEL</button>
+            <button onclick="openVault()" class="btn-minimal">VAULT RECORDS</button>
         </div>
 
-        <div id="menu-master" class="hidden space-y-10">
-            <div class="p-8 border border-gold/20 bg-gold/5 text-center">
-                <p data-en="MASTER ARCHITECT" data-ar="المهندس الرئيسي" class="text-[9px] tracking-[6px] uppercase mb-6">MASTER ARCHITECT</p>
-                <button onclick="openArchitect()" class="btn-minimal w-full">SYSTEM CODE</button>
-            </div>
-            <button onclick="openVault()" data-en="VAULT RECORDS" data-ar="سجلات القبو" class="btn-minimal w-full">VAULT RECORDS</button>
+        <div id="menu-agent" class="hidden space-y-4 mt-6">
+            <button onclick="openAddListing()" class="btn-minimal">NEW LISTING</button>
         </div>
 
-        <div id="menu-agent" class="hidden space-y-8">
-            <p data-en="AGENT CONSOLE" data-ar="وحدة التحكم للوكيل" class="text-[9px] tracking-[6px] uppercase opacity-50">AGENT CONSOLE</p>
-            <button onclick="openAddListing()" data-en="NEW PROPERTY" data-ar="عقار جديد" class="btn-minimal w-full">NEW PROPERTY</button>
+        <div id="menu-buyer" class="hidden space-y-4 mt-6">
+            <button class="btn-minimal">FAVORITES</button>
         </div>
 
-        <div id="menu-buyer" class="hidden space-y-8">
-            <p data-en="BUYER PORTAL" data-ar="بوابة المشتري" class="text-[9px] tracking-[6px] uppercase opacity-50">BUYER PORTAL</p>
-            <button data-en="COLLECTIONS" data-ar="المجموعات" class="btn-minimal w-full">COLLECTIONS</button>
-        </div>
-
-        <button onclick="handleLogout()" class="absolute bottom-12 left-12 text-[9px] tracking-widest text-red-900 font-bold uppercase">DISCONNECT</button>
+        <button onclick="handleLogout()" class="absolute bottom-8 left-8 text-[8px] tracking-widest text-red-700 font-bold">DISCONNECT</button>
     </aside>
 
     <main id="main-viewport" class="hidden">
-        <header class="mb-24 border-b border-gold/10 pb-12">
-            <h2 id="view-title" class="text-7xl font-thin tracking-tighter uppercase">EXPLORE</h2>
-        </header>
-        <div id="listing-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"></div>
+        <h2 id="view-title" class="text-5xl font-thin tracking-tighter mb-12">EXPLORE</h2>
+        <div id="listing-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
     </main>
 
-    <div class="fixed bottom-12 left-1/2 -translate-x-1/2 flex gap-4 z-[5000] bg-black/50 p-3 rounded-full backdrop-blur-xl border border-white/5">
-        <button onclick="switchPOV('buyer')" class="btn-minimal !py-2 !px-5 !text-[8px]">BUYER POV</button>
-        <button onclick="switchPOV('agent')" class="btn-minimal !py-2 !px-5 !text-[8px]">AGENT POV</button>
-        <button id="exit-pov" onclick="exitPOV()" class="btn-minimal !py-2 !px-5 !text-[8px] !border-red-900 !text-red-900 hidden">EXIT POV</button>
+    <div class="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-4 z-[5000] bg-black/80 p-2 border border-white/10">
+        <button onclick="switchPOV('buyer')" class="btn-minimal !px-4">BUYER POV</button>
+        <button onclick="switchPOV('agent')" class="btn-minimal !px-4">AGENT POV</button>
+        <button id="exit-pov" onclick="exitPOV()" class="btn-minimal !px-4 !border-red-900 hidden">EXIT POV</button>
     </div>
 
-    <div id="modal-architect" class="fixed inset-0 z-[40000] bg-black/98 backdrop-blur-3xl hidden items-center justify-center p-20 flex-col">
-        <h3 class="mb-10 tracking-[15px] uppercase text-gold text-xl">Architect Control</h3>
-        <div id="ace-editor" class="w-full flex-1 border border-gold/20"></div>
-        <div class="flex gap-6 mt-12 w-full max-w-4xl">
-            <button onclick="deployCode()" class="btn-minimal flex-1">DEPLOY CHANGES</button>
-            <button onclick="closeModals()" class="btn-minimal">CLOSE</button>
-        </div>
-    </div>
-
-    <div id="modal-details" class="fixed inset-0 z-[40000] bg-black/95 backdrop-blur-2xl hidden items-center justify-center">
-        <div class="bg-[#080808] border border-gold p-16 text-center max-w-xl w-full">
-            <h3 id="det-title" class="text-5xl font-thin mb-10 uppercase"></h3>
-            <p id="det-price" class="text-2xl mb-12 font-bold"></p>
-            <button id="det-action" class="btn-minimal w-full mb-6">CONTACT AGENT</button>
-            <button onclick="closeModals()" class="btn-minimal w-full opacity-40">CLOSE</button>
+    <div id="modal-architect" class="modal">
+        <div class="w-full h-full flex flex-col p-10">
+            <div id="ace-editor" class="flex-1 border border-gold/20"></div>
+            <div class="flex gap-4 mt-6">
+                <button onclick="deployCode()" class="btn-minimal">DEPLOY</button>
+                <button onclick="closeModals()" class="btn-minimal">CLOSE</button>
+            </div>
         </div>
     </div>
 
@@ -191,135 +147,65 @@
         const db = getFirestore(app);
         const masterEmail = "mohammedtaha9o.elghawaby@gmail.com";
 
-        /* --- SECURITY HANDSHAKE ENGINE --- */
-
+        // RESTORED SECURITY ACTIONS
         window.acceptSecurityCookies = () => {
-            const expiry = new Date();
-            expiry.setDate(expiry.getDate() + 30);
-            document.cookie = `FH_SIG_KEY=MASTER_VERIFIED; expires=${expiry.toUTCString()}; path=/`;
+            document.cookie = "FH_ACCESS=MASTER_KEY; max-age=2592000; path=/";
             document.getElementById('cookie-popup').style.display = 'none';
-            runSecurityProtocol();
+            checkSecurity();
         };
 
-        async function runSecurityProtocol() {
-            const bar = document.getElementById('shield-bar');
-            const status = document.getElementById('security-status');
+        function checkSecurity() {
             const shield = document.getElementById('security-shield');
-            
-            bar.style.transform = 'translateX(0)';
-            
-            // Check for Cookie Signature
-            const hasSig = document.cookie.includes("FH_SIG_KEY=MASTER_VERIFIED");
-            
-            if(!hasSig) {
-                status.innerText = "SIGNATURE REQUIRED";
+            if (document.cookie.includes("FH_ACCESS=MASTER_KEY")) {
+                shield.style.display = 'none';
+            } else {
                 document.getElementById('cookie-popup').style.display = 'block';
-                return;
             }
-
-            // IP Integrity (Placeholder for advanced whitelist logic)
-            status.innerText = "SIGNATURE VERIFIED";
-            
-            setTimeout(() => {
-                shield.style.opacity = '0';
-                setTimeout(() => shield.classList.add('hidden'), 1500);
-            }, 1000);
         }
 
-        /* --- UI & POV ENGINE --- */
-
+        // RESTORED POV ACTIONS
         window.switchPOV = (role) => {
-            document.getElementById('pov-indicator').style.display = 'block';
-            document.getElementById('pov-indicator').innerText = `${role.toUpperCase()} POV`;
             document.getElementById('exit-pov').classList.remove('hidden');
-            ['master', 'agent', 'buyer'].forEach(r => document.getElementById(`menu-${r}`).classList.add('hidden'));
+            ['master', 'agent', 'buyer'].forEach(r => document.getElementById(`menu-${r}`)?.classList.add('hidden'));
             document.getElementById(`menu-${role}`).classList.remove('hidden');
         };
-
         window.exitPOV = () => location.reload();
 
+        // RESTORED UI ACTIONS
         window.toggleLang = (lang) => {
             document.getElementById('bodyRoot').className = lang === 'ar' ? 'rtl' : '';
-            document.querySelectorAll('[data-en]').forEach(el => {
-                el.innerText = el.getAttribute(`data-${lang}`);
-            });
+            document.querySelectorAll('[data-en]').forEach(el => el.innerText = el.getAttribute(`data-${lang}`));
         };
 
-        /* --- LISTING & MODAL ENGINE --- */
+        window.handleLogin = () => signInWithEmailAndPassword(auth, email.value, password.value).catch(e => alert(e.message));
+        window.handleLogout = () => signOut(auth).then(() => location.reload());
 
-        window.openDetails = (title, price, wa) => {
-            document.getElementById('det-title').innerText = title;
-            document.getElementById('det-price').innerText = `EGP ${Number(price).toLocaleString()}`;
-            document.getElementById('det-action').onclick = () => window.open(`https://wa.me/${wa}`);
-            document.getElementById('modal-details').style.display = 'flex';
-        };
-
-        window.closeModals = () => {
-            document.getElementById('modal-details').style.display = 'none';
-            document.getElementById('modal-architect').style.display = 'none';
-        };
-
-        /* --- SYSTEM AUTH --- */
-
-        onAuthStateChanged(auth, async (user) => {
+        onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById('auth-section').classList.add('hidden');
                 document.getElementById('main-viewport').classList.remove('hidden');
                 const isM = user.email.toLowerCase() === masterEmail;
-                
-                if (isM) {
-                    document.getElementById('menu-master').classList.remove('hidden');
-                    document.getElementById('view-title').innerText = "ARCHITECT";
-                } else {
-                    document.getElementById('menu-agent').classList.remove('hidden');
-                    document.getElementById('view-title').innerText = "AGENT CONSOLE";
-                }
-
-                const evo = await getDoc(doc(db, "system", "evolution"));
-                if(evo.exists()) {
-                    const script = document.createElement('script');
-                    script.text = evo.data().script;
-                    document.body.appendChild(script);
-                }
+                document.getElementById(isM ? 'menu-master' : 'menu-agent').classList.remove('hidden');
             }
-            runSecurityProtocol();
+            checkSecurity();
         });
 
-        window.handleLogin = () => {
-            signInWithEmailAndPassword(auth, email.value, password.value).catch(err => alert(err.message));
-        };
-
-        window.handleLogout = () => signOut(auth).then(() => location.reload());
-
+        // LISTINGS
         onSnapshot(query(collection(db, 'properties'), orderBy('createdAt', 'desc')), (snap) => {
             const grid = document.getElementById('listing-grid');
             grid.innerHTML = '';
             snap.forEach(d => {
                 const p = d.data();
-                const card = document.createElement('div');
-                card.className = "asset-card";
-                card.innerHTML = `<p class="text-[8px] tracking-[5px] uppercase opacity-40 mb-3">${p.location}</p>
-                                  <h4 class="text-2xl font-thin uppercase">${p.title}</h4>
-                                  <p class="mt-12 text-xl font-bold">EGP ${Number(p.price).toLocaleString()}</p>`;
-                card.onclick = () => openDetails(p.title, p.price, p.whatsapp);
-                grid.appendChild(card);
+                grid.innerHTML += `<div class="asset-card" onclick="alert('Price: EGP ${p.price}')">
+                    <p class="text-[7px] uppercase opacity-40">${p.location}</p>
+                    <h4 class="text-xl uppercase">${p.title}</h4>
+                </div>`;
             });
         });
 
         const editor = ace.edit("ace-editor");
-        editor.setTheme("ace/theme/monokai");
-        editor.session.setMode("ace/mode/javascript");
-
-        window.openArchitect = async () => {
-            const snap = await getDoc(doc(db, "system", "evolution"));
-            editor.setValue(snap.exists() ? snap.data().script : "// System Live...");
-            document.getElementById('modal-architect').style.display = 'flex';
-        };
-
-        window.deployCode = async () => {
-            await setDoc(doc(db, "system", "evolution"), { script: editor.getValue() });
-            location.reload();
-        };
+        window.openArchitect = () => document.getElementById('modal-architect').style.display = 'flex';
+        window.closeModals = () => document.getElementById('modal-architect').style.display = 'none';
 
     </script>
 </body>
