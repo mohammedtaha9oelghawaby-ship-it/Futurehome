@@ -2,140 +2,369 @@
 <html lang="en" id="htmlTag">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FUTURE HOME | ARCHITECT COMMAND</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FUTURE HOME | SOVEREIGN GOLD-NOIR</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/ace.js"></script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700&family=Noto+Sans+Arabic:wght@100;300;400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+        
+        /* COLOR PALETTE DEFINITION
+           Primary Gold: #c5a059
+           Dark Gold: #856a37
+           Obsidian: #050505
+           Gloss: rgba(255, 255, 255, 0.03)
+        */
         
         :root {
-            --gold: #c5a059;
-            --obsidian: #050505;
-            --glass: rgba(10, 10, 10, 0.98);
+            --gold-primary: #c5a059;
+            --gold-dark: #856a37;
+            --gold-glow: rgba(197, 160, 89, 0.4);
+            --black-obsidian: #050505;
+            --glass-sheen: rgba(255, 255, 255, 0.02);
+            --transition-ultra: 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: #000;
-            color: #fff;
-            margin: 0;
-            overflow-x: hidden;
+            background: var(--black-obsidian);
+            color: var(--gold-primary);
+            overflow: hidden;
             height: 100vh;
+            width: 100vw;
         }
 
-        /* --- THE SCRIPT EVOLUTION PANEL --- */
-        #architectPanel {
+        /* --- CINEMATIC ANIMATED BACKGROUND --- */
+        #bg-canvas {
             position: fixed;
             inset: 0;
-            background: var(--obsidian);
-            z-index: 10000;
-            display: none;
-            flex-direction: column;
-            padding: 40px;
+            z-index: -2;
+            background: #000;
         }
 
-        #codeEditor {
-            flex: 1;
-            width: 100%;
-            border: 1px solid rgba(197, 160, 89, 0.2);
-            font-size: 14px;
-            margin: 20px 0;
+        .bg-slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transform: scale(1.2);
+            transition: opacity 3s ease-in-out, transform 10s linear;
+            filter: brightness(0.2) contrast(1.2) sepia(0.2);
         }
 
-        /* --- CINEMATIC INTERFACE --- */
-        .sidebar {
+        .bg-slide.active {
+            opacity: 1;
+            transform: scale(1.0);
+        }
+
+        #vignette {
             position: fixed;
-            top: 0; bottom: 0; width: 440px;
-            background: var(--glass);
-            border-inline-end: 1px solid rgba(255,255,255,0.05);
-            padding: 80px 50px;
-            z-index: 1000;
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.8) 100%);
+            pointer-events: none;
         }
 
-        #appScreen {
-            margin-inline-start: 440px;
-            padding: 100px;
-            min-height: 100vh;
-            background: linear-gradient(to bottom, transparent, #000);
+        /* --- GLOSSY SIDEBAR ARCHITECTURE --- */
+        .sidebar-gloss {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 420px;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(40px) saturate(150%);
+            -webkit-backdrop-filter: blur(40px) saturate(150%);
+            border-right: 1px solid rgba(197, 160, 89, 0.15);
+            z-index: 1000;
+            padding: 80px 50px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 20px 0 50px rgba(0,0,0,0.5);
+            transform: translateX(0);
+            transition: var(--transition-ultra);
+        }
+
+        .brand-logo {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            background: linear-gradient(to bottom, var(--gold-primary), var(--gold-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 100px;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        /* --- PREMIUM UI COMPONENTS --- */
+        .lux-input-group {
+            margin-bottom: 30px;
+            position: relative;
         }
 
         .lux-input {
-            width: 100%; background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.08); padding: 22px;
-            color: white; margin-bottom: 20px; outline: none;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(197, 160, 89, 0.1);
+            padding: 22px 25px;
+            color: var(--gold-primary);
+            font-size: 13px;
+            letter-spacing: 2px;
+            outline: none;
+            transition: all 0.5s ease;
+            border-radius: 2px;
         }
 
-        .btn-gold {
-            width: 100%; padding: 22px; background: var(--gold);
-            color: black; font-weight: 800; text-transform: uppercase;
-            letter-spacing: 4px; border: none; cursor: pointer;
+        .lux-input:focus {
+            border-color: var(--gold-primary);
+            background: rgba(197, 160, 89, 0.05);
+            box-shadow: 0 0 20px var(--gold-glow);
         }
 
-        #bg-video-wrap {
-            position: fixed; inset: 0; z-index: -1;
-            filter: brightness(0.2);
+        .btn-gold-action {
+            width: 100%;
+            padding: 25px;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            color: #000;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-ultra);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-gold-action::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            transition: 0.8s;
+        }
+
+        .btn-gold-action:hover::after {
+            left: 100%;
+            top: 100%;
+        }
+
+        .btn-gold-action:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px var(--gold-glow);
+            filter: brightness(1.1);
+        }
+
+        /* --- ARCHITECT DASHBOARD (FULL MODAL) --- */
+        #architectModal {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            background: var(--black-obsidian);
+            display: none;
+            flex-direction: column;
+            padding: 40px;
+            animation: modalFade 0.6s var(--transition-ultra);
+        }
+
+        @keyframes modalFade {
+            from { opacity: 0; transform: scale(1.05); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        #ace-editor {
+            flex: 1;
+            margin: 30px 0;
+            border: 1px solid var(--gold-dark);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+        }
+
+        /* --- CONTENT VIEWPORT --- */
+        #content-main {
+            margin-left: 420px;
+            padding: 100px;
+            height: 100vh;
+            overflow-y: auto;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition-ultra);
+        }
+
+        #content-main.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .property-card-lux {
+            background: rgba(15, 15, 15, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(197, 160, 89, 0.1);
+            padding: 45px;
+            transition: var(--transition-ultra);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .property-card-lux:hover {
+            border-color: var(--gold-primary);
+            background: rgba(197, 160, 89, 0.03);
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .property-card-lux::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+            transform: translateX(-100%);
+            transition: 0.8s;
+        }
+
+        .property-card-lux:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* --- PERSISTENCE SHIELD --- */
+        #shield-init {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .gold-loader {
+            width: 80px;
+            height: 2px;
+            background: rgba(197, 160, 89, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gold-loader::after {
+            content: '';
+            position: absolute;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold-primary);
+            animation: load 2s infinite;
+        }
+
+        @keyframes load {
+            0% { left: -100%; }
+            50% { left: 0; }
+            100% { left: 100%; }
         }
 
         .hidden { display: none !important; }
     </style>
 </head>
-<body id="bodyTag">
+<body>
 
-    <div id="architectPanel">
-        <div class="flex justify-between items-center mb-6">
-            <div>
-                <h1 class="text-gold tracking-[10px] uppercase text-xl font-bold">Script Architect</h1>
-                <p class="text-gray-500 text-[10px] mt-2">REAL-TIME SYSTEM MODIFICATION PROTOCOL</p>
-            </div>
-            <div class="flex gap-4">
-                <button onclick="saveEvolution()" class="bg-gold text-black px-10 py-3 font-bold text-xs uppercase tracking-widest">Deploy Script</button>
-                <button onclick="toggleArchitect(false)" class="border border-white/20 px-10 py-3 text-xs uppercase">Close</button>
-            </div>
-        </div>
-        <div id="codeEditor"></div>
+    <div id="shield-init">
+        <div class="brand-logo mb-12">FUTURE HOME</div>
+        <div class="gold-loader"></div>
+        <p class="mt-8 text-[9px] tracking-[8px] uppercase font-bold opacity-50">Synchronizing Sovereign Protocols</p>
     </div>
 
-    <div class="sidebar">
-        <div class="text-gold tracking-[15px] font-bold text-2xl mb-20">FUTURE HOME</div>
+    <div id="architectModal">
+        <div class="flex justify-between items-center border-b border-gold/10 pb-8">
+            <div>
+                <h2 class="text-gold-primary text-2xl font-black tracking-[12px] uppercase">Architect Command</h2>
+                <p class="text-gold-dark text-[10px] tracking-[4px] mt-2">REAL-TIME SYSTEM EVOLUTION MODULE</p>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="saveEvolution()" class="bg-gold-primary text-black px-12 py-4 font-black text-xs uppercase tracking-widest hover:bg-white transition">Deploy Evolution</button>
+                <button onclick="closeArchitect()" class="border border-gold-dark text-gold-dark px-12 py-4 text-xs uppercase tracking-widest">Abort</button>
+            </div>
+        </div>
+        <div id="ace-editor"></div>
+    </div>
+
+    <div id="bg-canvas">
+        <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2000')"></div>
+        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2000')"></div>
+        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=2000')"></div>
+        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=2000')"></div>
+    </div>
+    <div id="vignette"></div>
+
+    <aside class="sidebar-gloss">
+        <div class="brand-logo">FUTURE HOME</div>
         
-        <div id="authBox">
-            <button onclick="loginGoogle()" class="w-full border border-white/10 p-5 mb-4 text-[10px] uppercase tracking-widest hover:bg-white hover:text-black transition">Continue with Google</button>
-            <div class="py-8 text-center text-[8px] text-gray-600 uppercase tracking-[5px]">Or Access Key</div>
-            <input type="email" id="email" class="lux-input" placeholder="ID">
-            <input type="password" id="password" class="lux-input" placeholder="KEY">
-            <button id="btnLogin" class="btn-gold">Authorize</button>
+        <div id="auth-gate">
+            <div class="lux-input-group">
+                <input type="email" id="email" class="lux-input" placeholder="IDENTITY EMAIL">
+            </div>
+            <div class="lux-input-group">
+                <input type="password" id="password" class="lux-input" placeholder="SECURITY KEY">
+            </div>
+            <button onclick="loginManual()" class="btn-gold-action">Authorize Access</button>
+            
+            <div class="flex items-center gap-4 my-10 opacity-20">
+                <div class="h-px flex-1 bg-gold-primary"></div>
+                <span class="text-[8px] uppercase tracking-[4px]">Social Vault</span>
+                <div class="h-px flex-1 bg-gold-primary"></div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="loginGoogle()" class="border border-gold-dark/30 py-4 text-[9px] uppercase tracking-widest hover:bg-gold-primary hover:text-black transition">Google</button>
+                <button onclick="loginFB()" class="border border-gold-dark/30 py-4 text-[9px] uppercase tracking-widest hover:bg-gold-primary hover:text-black transition">Facebook</button>
+            </div>
         </div>
 
-        <div id="masterMenu" class="hidden flex-1 flex flex-col">
-            <div class="bg-gold/5 border border-gold/20 p-6 mb-10">
-                <p class="text-[9px] text-gold uppercase tracking-[4px] mb-4">Core Systems Ready</p>
-                <button onclick="toggleArchitect(true)" class="w-full bg-white text-black py-3 text-[9px] font-bold uppercase">Modify Website Script</button>
+        <div id="master-nav" class="hidden flex-1 flex flex-col">
+            <div id="master-badge" class="hidden mb-12 p-8 border border-gold-primary/20 bg-gold-primary/5 rounded-sm">
+                <p class="text-gold-primary text-[10px] font-black tracking-[6px] text-center mb-6 uppercase">Master Identified</p>
+                <button onclick="openArchitect()" class="w-full bg-white text-black py-4 text-[9px] font-black uppercase tracking-widest hover:bg-gold-primary transition">Open Architect Panel</button>
             </div>
             
             <nav class="space-y-4">
-                <button onclick="openListingForm()" class="w-full border border-white/10 p-5 text-[10px] uppercase tracking-widest text-left hover:border-gold">Add New Asset</button>
-                <button class="w-full border border-white/10 p-5 text-[10px] uppercase tracking-widest text-left hover:border-gold">Vault Statistics</button>
+                <button class="w-full text-left p-6 border border-white/5 hover:border-gold-primary transition text-[10px] uppercase tracking-[4px]">Listing Protocol</button>
+                <button class="w-full text-left p-6 border border-white/5 hover:border-gold-primary transition text-[10px] uppercase tracking-[4px]">System Analytics</button>
             </nav>
 
-            <button onclick="logout()" class="mt-auto text-red-900 text-[9px] uppercase tracking-widest font-bold">Terminate Session</button>
+            <button onclick="logout()" class="mt-auto text-gold-dark hover:text-red-500 transition text-[10px] uppercase tracking-[8px] font-black text-center">Terminate Session</button>
         </div>
-    </div>
+    </aside>
 
-    <main id="appScreen" class="hidden">
-        <header class="flex justify-between items-end border-b border-white/5 pb-10 mb-20">
-            <h2 id="welcomeMsg" class="text-7xl font-thin tracking-tighter uppercase">Initializing...</h2>
+    <main id="content-main">
+        <header class="flex justify-between items-end mb-24 pb-12 border-b border-gold-primary/10">
+            <div>
+                <p class="text-gold-primary text-[10px] tracking-[8px] uppercase mb-4 opacity-50">Active Session</p>
+                <h1 id="user-display" class="text-7xl font-thin tracking-tighter uppercase text-gold-primary"></h1>
+            </div>
         </header>
-        <div id="assetGrid" class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8"></div>
+        
+        <div id="property-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10"></div>
     </main>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -150,85 +379,94 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const provider = new GoogleAuthProvider();
-        const MASTERS = ["mohammedtaha9o.elghawaby@gmail.com"];
+        const masters = ["mohammedtaha9o.elghawaby@gmail.com"];
 
-        // ACE EDITOR SETUP
-        const editor = ace.edit("codeEditor");
+        // ACE EDITOR CONFIG (IPAD FRIENDLY)
+        const editor = ace.edit("ace-editor");
         editor.setTheme("ace/theme/monokai");
         editor.session.setMode("ace/mode/javascript");
+        editor.setOptions({ fontSize: "16px", useWorker: false, wrap: true });
 
-        /* --- THE ARCHITECT ENGINE: DYNAMIC CODE INJECTION --- */
-
-        window.toggleArchitect = async (show) => {
-            if(show) {
-                // Fetch current evolution from Cloud
-                const evolution = await getDoc(doc(db, "system", "evolution"));
-                editor.setValue(evolution.exists() ? evolution.data().script : "// Start writing evolution script...");
-                document.getElementById('architectPanel').style.display = 'flex';
-            } else {
-                document.getElementById('architectPanel').style.display = 'none';
-            }
+        // --- CORE ACTIONS ---
+        
+        window.loginManual = () => {
+            const e = document.getElementById('email').value.trim();
+            const p = document.getElementById('password').value;
+            signInWithEmailAndPassword(auth, e, p).catch(err => alert(err.message));
         };
 
-        window.saveEvolution = async () => {
-            const newCode = editor.getValue();
-            await setDoc(doc(db, "system", "evolution"), {
-                script: newCode,
-                updatedBy: auth.currentUser.email,
-                timestamp: new Date()
-            });
-            alert("SYSTEM EVOLUTION DEPLOYED. RELOADING PROTOCOLS.");
-            location.reload();
-        };
-
-        // --- AUTHENTICATION FLOW ---
-
-        window.loginGoogle = () => signInWithPopup(auth, provider);
+        window.loginGoogle = () => signInWithPopup(auth, new GoogleAuthProvider());
         
         window.logout = () => signOut(auth).then(() => location.reload());
 
-        document.getElementById('btnLogin').onclick = () => {
-            signInWithEmailAndPassword(auth, email.value, password.value).catch(e => alert(e.message));
+        window.openArchitect = async () => {
+            const snap = await getDoc(doc(db, "system", "evolution"));
+            editor.setValue(snap.exists() ? snap.data().script : "// Start Evolution...");
+            document.getElementById('architectModal').style.display = 'flex';
         };
+
+        window.closeArchitect = () => document.getElementById('architectModal').style.display = 'none';
+
+        window.saveEvolution = async () => {
+            await setDoc(doc(db, "system", "evolution"), {
+                script: editor.getValue(),
+                deployedAt: new Date()
+            });
+            alert("SYSTEM EVOLVED. REBOOTING.");
+            location.reload();
+        };
+
+        // --- AUTH & DATA FLOW ---
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                const isM = MASTERS.includes(user.email.toLowerCase());
-                document.getElementById('authBox').classList.add('hidden');
-                document.getElementById('masterMenu').classList.remove('hidden');
-                document.getElementById('appScreen').classList.remove('hidden');
-                document.getElementById('welcomeMsg').innerText = isM ? "Master Architect" : "Verified Agent";
+                const isMaster = masters.includes(user.email.toLowerCase());
+                document.getElementById('auth-gate').classList.add('hidden');
+                document.getElementById('master-nav').classList.remove('hidden');
+                document.getElementById('master-badge').classList.toggle('hidden', !isMaster);
+                document.getElementById('content-main').classList.add('visible');
+                document.getElementById('user-display').innerText = isMaster ? "Architect" : "Verified Agent";
                 
-                // Fetch and Inject the Evolution Script
-                const evolution = await getDoc(doc(db, "system", "evolution"));
-                if (evolution.exists()) {
-                    const dynamicScript = document.createElement('script');
-                    dynamicScript.text = evolution.data().script;
-                    document.body.appendChild(dynamicScript);
-                    console.log("EVOLUTION SCRIPT INJECTED SUCCESSFULLY.");
+                // Fetch Evolution Logic
+                const evo = await getDoc(doc(db, "system", "evolution"));
+                if(evo.exists()) {
+                    const script = document.createElement('script');
+                    script.text = evo.data().script;
+                    document.body.appendChild(script);
                 }
             }
+            
+            // Release Shield
+            setTimeout(() => {
+                document.getElementById('shield-init').style.opacity = '0';
+                setTimeout(() => document.getElementById('shield-init').classList.add('hidden'), 1000);
+            }, 1500);
         });
 
-        // --- BOOTSTRAP UI DATA ---
-        function initGrid() {
-            onSnapshot(query(collection(db, 'properties'), orderBy('createdAt', 'desc')), (snap) => {
-                const grid = document.getElementById('assetGrid');
-                grid.innerHTML = '';
-                snap.forEach(d => {
-                    const p = d.data();
-                    grid.innerHTML += `
-                        <div class="border border-white/5 p-8 bg-white/5 hover:border-gold transition cursor-pointer">
-                            <span class="text-gold text-[8px] tracking-[5px] uppercase font-bold">${p.location}</span>
-                            <h3 class="text-2xl font-light mt-4 uppercase">${p.title}</h3>
-                            <p class="mt-10 font-bold">EGP ${Number(p.price).toLocaleString()}</p>
-                        </div>
-                    `;
-                });
+        // Property Sync
+        onSnapshot(query(collection(db, 'properties'), orderBy('createdAt', 'desc')), (snap) => {
+            const grid = document.getElementById('property-grid');
+            grid.innerHTML = '';
+            snap.forEach(d => {
+                const p = d.data();
+                grid.innerHTML += `
+                    <div class="property-card-lux">
+                        <p class="text-gold-primary text-[8px] tracking-[6px] uppercase font-bold mb-4">${p.location}</p>
+                        <h4 class="text-2xl font-light text-gold-primary uppercase tracking-tight">${p.title}</h4>
+                        <p class="mt-10 text-xl font-black text-gold-primary">EGP ${Number(p.price).toLocaleString()}</p>
+                    </div>
+                `;
             });
-        }
-        initGrid();
+        });
+
+        // Background Animation Logic
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.bg-slide');
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 8000);
 
     </script>
 </body>
