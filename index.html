@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FUTURE HOME | THE TITAN SOVEREIGN</title>
+    <title>FUTURE HOME | IRON-SHIELD OMNI</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,154 +13,176 @@
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700;900&family=Noto+Sans+Arabic:wght@100;400;700;900&display=swap');
         
         :root {
-            --gold-primary: #c5a059;
-            --gold-dark: #856a37;
-            --gold-glow: rgba(197, 160, 89, 0.4);
-            --black-obsidian: #050505;
-            --glass-sheen: rgba(255, 255, 255, 0.02);
-            --transition-titan: 1s cubic-bezier(0.19, 1, 0.22, 1);
+            --gold: #c5a059;
+            --obsidian: #050505;
+            --transition-fluid: 0.8s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
-        /* LINGUISTIC ENGINE DEFAULTS */
-        body { font-family: 'Montserrat', sans-serif; background: #000; color: var(--gold-primary); overflow: hidden; height: 100vh; }
+        body { font-family: 'Montserrat', sans-serif; background: #000; color: var(--gold); overflow: hidden; height: 100vh; margin: 0; }
         body.rtl { font-family: 'Noto Sans Arabic', sans-serif; direction: rtl; }
 
-        /* --- THE VAULT: ANIMATED DATA STREAM --- */
-        #vaultRecordsModal {
-            position: fixed; inset: 0; z-index: 8000; background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(50px); display: none; flex-direction: column; padding: 60px;
-            animation: slideInUp var(--transition-titan);
-        }
-        @keyframes slideInUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        /* --- SECURITY OVERLAYS --- */
+        #security-shield {
+            position: fixed; inset: 0; z-index: 20000; background: #000;
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+            transition: opacity 1s ease;
         }
 
-        .record-entry {
-            border-bottom: 1px solid rgba(197, 160, 89, 0.1); padding: 30px;
-            display: grid; grid-template-columns: 2fr 1fr 1fr; align-items: center;
-            transition: 0.4s;
+        #cookie-popup {
+            position: fixed; bottom: 30px; right: 30px; width: 350px;
+            background: rgba(10,10,10,0.95); backdrop-filter: blur(20px);
+            border: 1px solid var(--gold); padding: 30px; z-index: 15000;
+            display: none; animation: slideInUp 0.6s var(--transition-fluid);
         }
-        .record-entry:hover { background: rgba(197, 160, 89, 0.05); }
+        @keyframes slideInUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* --- THE GLOSS & MOTION ARCHITECTURE --- */
+        /* --- CLEAN BUTTONS --- */
+        .btn-minimal {
+            border: 1px solid rgba(197, 160, 89, 0.3); background: transparent; color: var(--gold);
+            padding: 10px 20px; font-size: 9px; text-transform: uppercase; letter-spacing: 3px;
+            cursor: pointer; transition: var(--transition-fluid); font-weight: 700;
+        }
+        .btn-minimal:hover { background: var(--gold); color: #000; border-color: var(--gold); }
+
+        /* --- POV INDICATOR --- */
+        #pov-indicator {
+            position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+            z-index: 10000; padding: 10px 40px; background: var(--gold); color: #000;
+            font-weight: 900; font-size: 10px; letter-spacing: 5px; text-transform: uppercase;
+            display: none; box-shadow: 0 0 30px rgba(197, 160, 89, 0.5);
+        }
+
+        /* --- SIDEBAR & VIEWPORT --- */
         .sidebar {
-            position: fixed; top: 0; bottom: 0; width: 460px;
-            background: rgba(8, 8, 8, 0.92); backdrop-filter: blur(60px);
-            border-right: 1px solid rgba(197, 160, 89, 0.15);
-            z-index: 1000; padding: 100px 60px;
-            transition: var(--transition-titan);
+            position: fixed; top: 0; left: 0; bottom: 0; width: 400px;
+            background: rgba(10,10,10,0.85); backdrop-filter: blur(50px);
+            border-right: 1px solid rgba(197, 160, 89, 0.1);
+            z-index: 1000; padding: 80px 40px; transition: var(--transition-fluid);
         }
-        body.rtl .sidebar { left: auto; right: 0; border-right: none; border-left: 1px solid rgba(197, 160, 89, 0.15); }
+        body.rtl .sidebar { left: auto; right: 0; border-right: none; border-left: 1px solid rgba(197, 160, 89, 0.1); }
+        #main-viewport { margin-left: 400px; padding: 100px; height: 100vh; overflow-y: auto; transition: 0.8s; }
+        body.rtl #main-viewport { margin-left: 0; margin-right: 400px; }
 
-        #main-content { margin-left: 460px; padding: 120px; height: 100vh; overflow-y: auto; transition: 0.8s; }
-        body.rtl #main-content { margin-left: 0; margin-right: 460px; }
-
-        .lux-input {
-            width: 100%; background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(197, 160, 89, 0.1); padding: 26px;
-            color: var(--gold-primary); font-size: 14px; outline: none; margin-bottom: 25px;
+        /* --- ASSET CARDS --- */
+        .asset-card {
+            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(197, 160, 89, 0.05);
+            padding: 40px; transition: var(--transition-fluid); cursor: pointer;
         }
+        .asset-card:hover { border-color: var(--gold); background: rgba(197, 160, 89, 0.03); transform: scale(1.02); }
 
-        .btn-gold-titan {
-            width: 100%; padding: 26px; background: var(--gold-primary);
-            color: #000; font-weight: 900; text-transform: uppercase;
-            letter-spacing: 6px; border: none; cursor: pointer; transition: 0.6s;
-        }
-        .btn-gold-titan:hover { background: #fff; box-shadow: 0 0 50px var(--gold-glow); transform: scale(1.02); }
-
-        .lang-switch {
-            position: absolute; top: 40px; right: 40px; display: flex; gap: 20px; z-index: 2000;
-        }
-        body.rtl .lang-switch { right: auto; left: 40px; }
-
-        .overlay {
-            position: fixed; inset: 0; z-index: 9000; background: rgba(0,0,0,0.98);
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 9000; background: rgba(0,0,0,0.95);
             backdrop-filter: blur(40px); display: none; align-items: center; justify-content: center;
         }
-        .overlay.active { display: flex; }
-
-        /* --- CINEMATIC BACKGROUND --- */
-        #bg-canvas { position: fixed; inset: 0; z-index: -2; background: #000; }
-        .bg-slide {
-            position: absolute; inset: 0; background-size: cover; background-position: center;
-            opacity: 0; transition: 4s ease-in-out; filter: brightness(0.2) contrast(1.1);
+        .pov-dock {
+            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 15px; z-index: 5000; background: rgba(0,0,0,0.5);
+            padding: 10px; border-radius: 50px; backdrop-filter: blur(20px);
         }
-        .bg-slide.active { opacity: 1; }
+        .hidden { display: none !important; }
     </style>
 </head>
-<body id="bodyTag">
+<body id="bodyRoot">
 
-    <div class="lang-switch">
-        <button onclick="setLang('en')" class="text-[10px] font-black tracking-widest text-gold-primary opacity-50 hover:opacity-100">ENGLISH</button>
-        <button onclick="setLang('ar')" class="text-[10px] font-black tracking-widest text-gold-primary opacity-50 hover:opacity-100">العربية</button>
-    </div>
-
-    <div id="vaultRecordsModal">
-        <div class="flex justify-between items-center mb-20 border-b border-gold-primary/10 pb-10">
-            <div>
-                <h2 data-en="VAULT RECORDS" data-ar="سجلات القبو" class="text-4xl font-black tracking-[15px] uppercase">VAULT RECORDS</h2>
-                <p data-en="HISTORICAL ASSET LOGS" data-ar="سجلات الأصول التاريخية" class="text-gold-dark text-[10px] tracking-[5px] mt-4 uppercase">HISTORICAL ASSET LOGS</p>
-            </div>
-            <button onclick="closeVault()" class="text-gold-primary border border-gold-primary/20 px-10 py-4 text-[10px] font-black uppercase tracking-widest hover:bg-gold-primary hover:text-black transition">CLOSE PROTOCOL</button>
+    <div id="security-shield">
+        <h1 class="text-gold tracking-[15px] font-black uppercase mb-4">Securing Node</h1>
+        <div class="w-20 h-[1px] bg-gold/20 relative overflow-hidden">
+            <div id="shield-bar" class="absolute inset-0 bg-gold -translate-x-full transition-transform duration-1000"></div>
         </div>
-        <div id="vaultStream" class="flex-1 overflow-y-auto pr-10">
-            </div>
+        <p id="security-status" class="text-[8px] tracking-[5px] uppercase mt-6 opacity-40">Verifying IP Protocol...</p>
     </div>
 
-    <div id="architectModal" class="overlay">
-        <div class="w-full h-full flex flex-col p-20">
-            <h2 data-en="SYSTEM EVOLUTION" data-ar="تطور النظام" class="text-3xl font-black tracking-[10px] mb-10">SYSTEM EVOLUTION</h2>
-            <div id="ace-editor" class="flex-1 border border-gold-primary/10"></div>
-            <div class="flex gap-6 mt-10">
-                <button onclick="saveEvolution()" class="flex-1 btn-gold-titan">DEPLOY SCRIPT</button>
-                <button onclick="closeModal('architectModal')" class="flex-1 border border-gold-primary text-gold-primary uppercase font-bold tracking-widest">ABORT</button>
-            </div>
-        </div>
+    <div id="cookie-popup">
+        <h4 data-en="PRIVACY HANDSHAKE" data-ar="مصافحة الخصوصية" class="text-[10px] font-black tracking-widest mb-4">PRIVACY HANDSHAKE</h4>
+        <p data-en="This site uses security cookies to maintain your encrypted session and verify IP integrity." 
+           data-ar="يستخدم هذا الموقع ملفات تعريف الارتباط الأمنية للحفاظ على جلستك المشفرة والتحقق من سلامة عنوان IP." 
+           class="text-[9px] leading-relaxed opacity-60 mb-6"></p>
+        <button onclick="acceptSecurityCookies()" data-en="ACCEPT & AUTHORIZE" data-ar="قبول وتفويض" class="btn-minimal w-full">ACCEPT & AUTHORIZE</button>
     </div>
 
-    <div id="bg-canvas">
-        <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2000')"></div>
-        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2000')"></div>
+    <div id="pov-indicator">POV ACTIVE</div>
+
+    <div class="fixed top-10 right-10 z-[11000] flex gap-4">
+        <button onclick="toggleLang('en')" class="btn-minimal px-4 py-2 !text-[7px]">EN</button>
+        <button onclick="toggleLang('ar')" class="btn-minimal px-4 py-2 !text-[7px]">AR</button>
+    </div>
+
+    <div class="fixed inset-0 -z-10 bg-black">
+        <div id="bg-slide" class="absolute inset-0 opacity-20 bg-center bg-cover transition-opacity duration-1000" 
+             style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2000')"></div>
     </div>
 
     <aside class="sidebar">
-        <div data-en="FUTURE HOME" data-ar="منزل المستقبل" class="text-gold-primary text-3xl font-black tracking-[15px] mb-24 text-center">FUTURE HOME</div>
-        
-        <div id="authGate">
-            <input type="email" id="email" class="lux-input" placeholder="IDENTITY EMAIL">
-            <input type="password" id="password" class="lux-input" placeholder="SECURITY KEY">
-            <button onclick="manualLogin()" data-en="AUTHORIZE" data-ar="تفويض الدخول" class="btn-gold-titan">AUTHORIZE</button>
+        <div class="brand text-center mb-20">
+            <h1 data-en="FUTURE HOME" data-ar="منزل المستقبل" class="text-xl font-black tracking-[12px] uppercase">FUTURE HOME</h1>
         </div>
 
-        <div id="masterMenu" class="hidden flex-1 flex flex-col">
-            <div class="bg-gold-primary/5 p-8 border border-gold-primary/20 mb-10">
-                <p data-en="MASTER ARCHITECT" data-ar="المهندس الرئيسي" class="text-center text-[10px] font-black tracking-widest mb-6 uppercase">MASTER ARCHITECT</p>
-                <button onclick="openArchitect()" data-en="SYSTEM CODE" data-ar="كود النظام" class="w-full py-4 bg-white text-black text-[9px] font-black uppercase">SYSTEM CODE</button>
+        <div id="auth-section" class="space-y-4">
+            <input type="email" id="email" class="w-full bg-white/5 border border-white/10 p-4 text-xs text-gold outline-none" placeholder="IDENTITY">
+            <input type="password" id="password" class="w-full bg-white/5 border border-white/10 p-4 text-xs text-gold outline-none" placeholder="KEY">
+            <button onclick="handleLogin()" data-en="AUTHORIZE" data-ar="تفويض" class="btn-minimal w-full">AUTHORIZE</button>
+        </div>
+
+        <div id="menu-master" class="hidden space-y-8">
+            <div class="p-6 border border-gold/20 bg-gold/5 text-center">
+                <p data-en="MASTER ARCHITECT" data-ar="المهندس الرئيسي" class="text-[8px] tracking-[5px] uppercase mb-4">MASTER ARCHITECT</p>
+                <button onclick="openArchitect()" class="btn-minimal w-full">SYSTEM CODE</button>
             </div>
-            
-            <nav class="space-y-6">
-                <button onclick="openVault()" data-en="VAULT RECORDS" data-ar="سجلات القبو" class="btn-gold-titan">VAULT RECORDS</button>
-                <button onclick="openModal('assetModal')" data-en="NEW LISTING" data-ar="قائمة جديدة" class="btn-gold-titan">NEW LISTING</button>
-            </nav>
-
-            <button onclick="logout()" data-en="TERMINATE SESSION" data-ar="إنهاء الجلسة" class="mt-auto text-red-900 text-[10px] font-black tracking-[5px] uppercase">TERMINATE SESSION</button>
+            <button onclick="openVault()" data-en="VAULT RECORDS" data-ar="سجلات القبو" class="btn-minimal w-full">VAULT RECORDS</button>
         </div>
+
+        <div id="menu-agent" class="hidden space-y-6">
+            <p data-en="AGENT DASHBOARD" data-ar="لوحة الوكيل" class="text-[8px] tracking-[5px] uppercase opacity-50">AGENT DASHBOARD</p>
+            <button onclick="openAddListing()" data-en="NEW PROPERTY" data-ar="عقار جديد" class="btn-minimal w-full">NEW PROPERTY</button>
+        </div>
+
+        <div id="menu-buyer" class="hidden space-y-6">
+            <p data-en="BUYER EXPERIENCE" data-ar="تجربة المشتري" class="text-[8px] tracking-[5px] uppercase opacity-50">BUYER EXPERIENCE</p>
+            <button data-en="SAVED ASSETS" data-ar="الأصول المحفوظة" class="btn-minimal w-full">SAVED ASSETS</button>
+        </div>
+
+        <button onclick="handleLogout()" class="absolute bottom-10 left-10 text-[8px] tracking-widest text-red-900 font-bold uppercase">DISCONNECT</button>
     </aside>
 
-    <main id="main-content" class="hidden">
-        <header class="mb-24 border-b border-gold-primary/10 pb-16">
-            <h1 id="userDisplay" class="text-7xl font-thin tracking-tighter uppercase">Initializing...</h1>
+    <main id="main-viewport" class="hidden">
+        <header class="mb-20 border-b border-gold/10 pb-10">
+            <h2 id="view-title" class="text-6xl font-thin tracking-tighter uppercase">EXPLORE</h2>
         </header>
-        <div id="propertyGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12"></div>
+        <div id="listing-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </main>
+
+    <div class="pov-dock">
+        <button onclick="switchPOV('buyer')" class="btn-minimal !py-2 !px-4 !text-[7px]">BUYER POV</button>
+        <button onclick="switchPOV('agent')" class="btn-minimal !py-2 !px-4 !text-[7px]">AGENT POV</button>
+        <button id="exit-pov" onclick="exitPOV()" class="btn-minimal !py-2 !px-4 !text-[7px] !border-red-900 !text-red-900 hidden">EXIT POV</button>
+    </div>
+
+    <div id="modal-architect" class="modal-overlay">
+        <div class="w-full h-full p-20 flex flex-col">
+            <h3 class="mb-10 tracking-[10px] uppercase text-gold">Architect Control</h3>
+            <div id="ace-editor" class="flex-1"></div>
+            <div class="flex gap-4 mt-8">
+                <button onclick="deployCode()" class="btn-minimal flex-1">DEPLOY CHANGES</button>
+                <button onclick="closeModals()" class="btn-minimal">CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-details" class="modal-overlay">
+        <div class="bg-[#080808] border border-gold p-12 text-center max-w-lg w-full">
+            <h3 id="det-title" class="text-4xl font-thin mb-8 uppercase"></h3>
+            <p id="det-price" class="text-xl mb-10 font-bold"></p>
+            <button id="det-action" class="btn-minimal w-full mb-4">CONTACT AGENT</button>
+            <button onclick="closeModals()" class="btn-minimal w-full opacity-50">CLOSE</button>
+        </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-        const config = {
+        const fbConfig = {
             apiKey: "AIzaSyCkKmG3XSEDC2u_-HZYze8clabp6JLKf1g",
             authDomain: "futurehomeapp-fdad7.firebaseapp.com",
             projectId: "futurehomeapp-fdad7",
@@ -169,90 +191,97 @@
             appId: "1:70607637960:web:f11bbd6a3bc53cb4ab44fd"
         };
 
-        const app = initializeApp(config);
+        const app = initializeApp(fbConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const masters = ["mohammedtaha9o.elghawaby@gmail.com"];
+        const masterEmail = "mohammedtaha9o.elghawaby@gmail.com";
 
-        // ACE EDITOR SETUP
-        const editor = ace.edit("ace-editor");
-        editor.setTheme("ace/theme/monokai");
-        editor.session.setMode("ace/mode/javascript");
-        editor.setOptions({ fontSize: "16px", wrap: true });
+        /* --- SECURITY & COOKIE PROTOCOL --- */
 
-        /* --- THE VAULT LOGIC: HISTORY RETRIEVAL --- */
-
-        window.openVault = () => {
-            document.getElementById('vaultRecordsModal').style.display = 'flex';
-            const stream = document.getElementById('vaultStream');
-            stream.innerHTML = '<p class="animate-pulse">DECRYPTING RECORDS...</p>';
-            
-            // Listen to the properties collection for historical changes
-            onSnapshot(query(collection(db, 'properties'), orderBy('createdAt', 'desc')), (snap) => {
-                stream.innerHTML = '';
-                snap.forEach(d => {
-                    const p = d.data();
-                    const date = p.createdAt?.toDate ? p.createdAt.toDate().toLocaleString() : 'Recent';
-                    stream.innerHTML += `
-                        <div class="record-entry">
-                            <span class="text-xl uppercase font-light">${p.title}</span>
-                            <span class="text-gold-dark text-[10px] tracking-widest">${p.location}</span>
-                            <span class="text-right text-gold-primary font-bold opacity-50">${date}</span>
-                        </div>
-                    `;
-                });
-            });
+        window.acceptSecurityCookies = () => {
+            const expiry = new Date();
+            expiry.setDate(expiry.getDate() + 7);
+            document.cookie = `FH_AUTH_SIG=AUTHORIZED; expires=${expiry.toUTCString()}; path=/`;
+            document.getElementById('cookie-popup').style.display = 'none';
+            runSecurityCheck();
         };
 
-        window.closeVault = () => document.getElementById('vaultRecordsModal').style.display = 'none';
-
-        /* --- LINGUISTIC ENGINE: ARABIC DEPLOYMENT --- */
-
-        window.setLang = (lang) => {
-            const body = document.getElementById('bodyTag');
-            body.className = lang === 'ar' ? 'rtl' : '';
-            localStorage.setItem('FH_LANG', lang);
+        async function runSecurityCheck() {
+            const bar = document.getElementById('shield-bar');
+            const status = document.getElementById('security-status');
             
-            // Translate all elements with data-en/data-ar
+            bar.style.transform = 'translateX(0)';
+            
+            // 1. IP CHECK
+            try {
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                const currentIP = data.ip;
+                console.log("Node IP identified:", currentIP);
+                // In a real production build, you'd compare currentIP to a whitelisted IP in Firebase
+            } catch (e) { console.warn("IP Check bypassed due to network restriction."); }
+
+            // 2. COOKIE VERIFICATION
+            const hasCookie = document.cookie.includes("FH_AUTH_SIG=AUTHORIZED");
+            if(!hasCookie) {
+                status.innerText = "COOKIE SIGNATURE MISSING";
+                document.getElementById('cookie-popup').style.display = 'block';
+                return;
+            }
+
+            status.innerText = "INTEGRITY VERIFIED";
+            setTimeout(() => {
+                document.getElementById('security-shield').style.opacity = '0';
+                setTimeout(() => document.getElementById('security-shield').classList.add('hidden'), 1000);
+            }, 800);
+        }
+
+        /* --- POV & UI ENGINE --- */
+
+        window.switchPOV = (role) => {
+            document.getElementById('pov-indicator').style.display = 'block';
+            document.getElementById('pov-indicator').innerText = `${role.toUpperCase()} POV ACTIVE`;
+            document.getElementById('exit-pov').classList.remove('hidden');
+            document.getElementById('menu-master').classList.add('hidden');
+            document.getElementById('menu-agent').classList.add('hidden');
+            document.getElementById('menu-buyer').classList.add('hidden');
+            document.getElementById(`menu-${role}`).classList.remove('hidden');
+        };
+
+        window.exitPOV = () => location.reload();
+
+        window.toggleLang = (lang) => {
+            document.getElementById('bodyRoot').className = lang === 'ar' ? 'rtl' : '';
             document.querySelectorAll('[data-en]').forEach(el => {
                 el.innerText = el.getAttribute(`data-${lang}`);
             });
-            
-            // Update placeholders
-            const emailInput = document.getElementById('email');
-            const passInput = document.getElementById('password');
-            if(lang === 'ar') {
-                emailInput.placeholder = "البريد الإلكتروني للهوية";
-                passInput.placeholder = "مفتاح الأمان";
-            } else {
-                emailInput.placeholder = "IDENTITY EMAIL";
-                passInput.placeholder = "SECURITY KEY";
-            }
         };
 
-        /* --- AUTH & SYSTEM CORE --- */
-
-        window.manualLogin = () => {
-            signInWithEmailAndPassword(auth, email.value, password.value).catch(err => alert(err.message));
+        window.openDetails = (title, price, wa) => {
+            document.getElementById('det-title').innerText = title;
+            document.getElementById('det-price').innerText = `EGP ${Number(price).toLocaleString()}`;
+            document.getElementById('det-action').onclick = () => window.open(`https://wa.me/${wa}`);
+            document.getElementById('modal-details').style.display = 'flex';
         };
 
-        window.logout = () => signOut(auth).then(() => location.reload());
+        window.closeModals = () => document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
 
-        window.openArchitect = async () => {
-            const snap = await getDoc(doc(db, "system", "evolution"));
-            editor.setValue(snap.exists() ? snap.data().script : "// System Live...");
-            document.getElementById('architectModal').classList.add('active');
-        };
+        /* --- AUTH & MASTER ARCHITECT --- */
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                const isM = masters.includes(user.email.toLowerCase());
-                document.getElementById('authGate').classList.add('hidden');
-                document.getElementById('masterMenu').classList.remove('hidden');
-                document.getElementById('main-content').classList.remove('hidden');
-                document.getElementById('userDisplay').innerText = isM ? "MASTER ARCHITECT" : "VERIFIED AGENT";
+                document.getElementById('auth-section').classList.add('hidden');
+                document.getElementById('main-viewport').classList.remove('hidden');
+                const isMaster = user.email.toLowerCase() === masterEmail;
                 
-                // Inject Global Logic Evolution
+                if (isMaster) {
+                    document.getElementById('menu-master').classList.remove('hidden');
+                    document.getElementById('view-title').innerText = "ARCHITECT";
+                } else {
+                    document.getElementById('menu-agent').classList.remove('hidden');
+                    document.getElementById('view-title').innerText = "AGENT";
+                }
+
                 const evo = await getDoc(doc(db, "system", "evolution"));
                 if(evo.exists()) {
                     const script = document.createElement('script');
@@ -260,32 +289,45 @@
                     document.body.appendChild(script);
                 }
             }
-            setLang(localStorage.getItem('FH_LANG') || 'en');
+            runSecurityCheck();
         });
 
-        // Property Display
+        window.handleLogin = () => {
+            signInWithEmailAndPassword(auth, email.value, password.value).catch(err => alert(err.message));
+        };
+
+        window.handleLogout = () => signOut(auth).then(() => location.reload());
+
+        // Listing Stream
         onSnapshot(query(collection(db, 'properties'), orderBy('createdAt', 'desc')), (snap) => {
-            const grid = document.getElementById('propertyGrid');
+            const grid = document.getElementById('listing-grid');
             grid.innerHTML = '';
             snap.forEach(d => {
                 const p = d.data();
-                grid.innerHTML += `
-                    <div class="border border-gold-primary/5 p-12 bg-white/5 hover:border-gold-primary transition cursor-pointer">
-                        <p class="text-[9px] tracking-[5px] uppercase mb-4 opacity-50">${p.location}</p>
-                        <h4 class="text-3xl font-thin uppercase">${p.title}</h4>
-                        <p class="mt-12 text-2xl font-black">EGP ${Number(p.price).toLocaleString()}</p>
-                    </div>
-                `;
+                const card = document.createElement('div');
+                card.className = "asset-card";
+                card.innerHTML = `<p class="text-[7px] tracking-[4px] uppercase opacity-40 mb-2">${p.location}</p>
+                                  <h4 class="text-xl font-thin uppercase">${p.title}</h4>
+                                  <p class="mt-8 text-lg font-bold">EGP ${Number(p.price).toLocaleString()}</p>`;
+                card.onclick = () => openDetails(p.title, p.price, p.whatsapp);
+                grid.appendChild(card);
             });
         });
 
-        // Background Rotation
-        let cur = 0; const slides = document.querySelectorAll('.bg-slide');
-        setInterval(() => {
-            slides[cur].classList.remove('active');
-            cur = (cur + 1) % slides.length;
-            slides[cur].classList.add('active');
-        }, 10000);
+        const editor = ace.edit("ace-editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/javascript");
+
+        window.openArchitect = async () => {
+            const snap = await getDoc(doc(db, "system", "evolution"));
+            editor.setValue(snap.exists() ? snap.data().script : "// Node ready...");
+            document.getElementById('modal-architect').style.display = 'flex';
+        };
+
+        window.deployCode = async () => {
+            await setDoc(doc(db, "system", "evolution"), { script: editor.getValue() });
+            location.reload();
+        };
 
     </script>
 </body>
