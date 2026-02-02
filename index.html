@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FUTURE HOME | OMNI-MONOLITH V7</title>
+    <title>TITAN V9 | FORTRESS ARCHITECTURE</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,329 +14,318 @@
         
         :root {
             --gold: #c5a059;
-            --white-gloss: rgba(255, 255, 255, 0.05);
-            --gold-gloss: linear-gradient(135deg, rgba(197,160,89,0.2) 0%, rgba(249,241,181,0.4) 50%, rgba(197,160,89,0.2) 100%);
-            --z-master: 999999;
-            --z-modal: 500000;
-            --z-pov: 100000;
+            --glass: rgba(5, 5, 5, 0.92);
+            --neon-border: rgba(197, 160, 89, 0.15);
+            --z-cookie: 9999999;
+            --z-settings: 8888888;
+            --z-modal: 7777777;
         }
 
-        /* --- SECTOR 1: COSMETIC ENGINE --- */
+        /* --- SECTOR: COSMETIC BASE --- */
         body { 
             background: #000; color: #fff; font-family: 'Montserrat', sans-serif;
-            margin: 0; height: 100vh; overflow: hidden;
+            margin: 0; height: 100vh; overflow: hidden; 
         }
 
-        #hyper-bg {
-            position: fixed; inset: 0; z-index: -1;
-            background: radial-gradient(circle at center, #111 0%, #000 100%);
+        .bg-system {
+            position: fixed; inset: 0; z-index: -2; background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 4s ease-in-out; filter: brightness(0.25) saturate(0.8);
+        }
+        .bg-system.active { opacity: 1; }
+        .vignette { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle, transparent 20%, #000 100%); }
+
+        /* --- SECTOR: GLOSSY UI KIT --- */
+        .glass-panel { 
+            background: var(--glass); backdrop-filter: blur(60px); 
+            border: 1px solid var(--neon-border); box-shadow: 0 0 40px rgba(0,0,0,1);
         }
 
-        .liquid-orb {
-            position: absolute; width: 60vw; height: 60vw; background: var(--gold);
-            filter: blur(150px); opacity: 0.08; border-radius: 50%;
-            animation: moveOrb 25s infinite alternate ease-in-out;
+        .btn-titan {
+            position: relative; overflow: hidden; cursor: pointer; transition: 0.5s;
+            background: rgba(255,255,255,0.02); border: 1px solid var(--neon-border);
+            font-family: 'Syncopate', sans-serif; font-size: 10px; letter-spacing: 5px;
+            text-transform: uppercase; color: var(--gold); display: flex; align-items: center; justify-content: center;
+        }
+        .btn-titan:hover { 
+            background: var(--gold); color: #000; box-shadow: 0 0 50px var(--gold); 
+            transform: translateY(-2px); border-color: #fff;
         }
 
-        @keyframes moveOrb {
-            0% { transform: translate(-10%, -10%) scale(1); }
-            100% { transform: translate(20%, 20%) scale(1.2); }
+        .input-titan {
+            background: rgba(255,255,255,0.04); border: 1px solid var(--neon-border);
+            padding: 20px; color: #fff; width: 100%; outline: none; transition: 0.3s;
+        }
+        .input-titan:focus { border-color: var(--gold); background: rgba(255,255,255,0.08); }
+
+        /* --- SECTOR: NAVIGATION & GRID --- */
+        .sidebar { position: fixed; top: 0; left: 0; bottom: 0; width: 480px; z-index: 5000; padding: 100px 60px; }
+        .main-viewport { margin-left: 480px; padding: 120px; height: 100vh; overflow-y: auto; scroll-behavior: smooth; }
+
+        .asset-card { 
+            background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); 
+            padding: 50px; transition: 0.7s cubic-bezier(0.19, 1, 0.22, 1); 
+        }
+        .asset-card:hover { 
+            background: rgba(197, 160, 89, 0.04); border-color: var(--gold);
+            transform: perspective(1000px) rotateY(-5deg) translateX(10px);
         }
 
-        /* --- SECTOR 2: COMPONENT ARCHITECTURE --- */
-        .glass-panel {
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(40px);
-            border: 1px solid rgba(197, 160, 89, 0.2);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        /* --- SECTOR: OVERLAYS --- */
+        .full-overlay { 
+            position: fixed; inset: 0; display: none; align-items: center; justify-content: center; 
+            background: rgba(0,0,0,0.98); backdrop-filter: blur(40px);
         }
 
-        .btn-star {
-            position: relative; overflow: hidden; cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            background: var(--white-gloss); border: 1px solid rgba(197, 160, 89, 0.3);
-            font-family: 'Syncopate', sans-serif; letter-spacing: 5px; text-transform: uppercase;
-            color: var(--gold); display: flex; align-items: center; justify-content: center;
+        #cookie-banner {
+            position: fixed; bottom: 0; width: 100%; z-index: var(--z-cookie);
+            background: #000; border-top: 1px solid var(--gold); padding: 50px;
+            display: none; flex-direction: column; align-items: center;
         }
 
-        .btn-star:hover {
-            background: var(--gold-gloss); color: #000;
-            border-color: #fff; box-shadow: 0 0 40px rgba(197, 160, 89, 0.4);
-            transform: translateY(-5px) scale(1.02);
-        }
-
-        .btn-star::after {
-            content: ''; position: absolute; top: -50%; left: -100%; width: 50%; height: 200%;
-            background: rgba(255,255,255,0.2); transform: rotate(30deg);
-            transition: 0.5s;
-        }
-
-        .btn-star:hover::after { left: 150%; }
-
-        /* --- SECTOR 3: MODULAR LAYOUT --- */
-        .sidebar {
-            position: fixed; top: 0; left: 0; bottom: 0; width: 500px;
-            z-index: 1000; padding: 100px 60px;
-        }
-
-        .viewport {
-            margin-left: 500px; padding: 120px; height: 100vh;
-            overflow-y: auto; scroll-behavior: smooth;
-        }
-
-        .card-asset {
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
-            padding: 60px; transition: 0.8s; cursor: pointer;
-        }
-
-        .card-asset:hover {
-            background: rgba(197,160,89,0.05); border-color: var(--gold);
-            box-shadow: 0 40px 100px -20px rgba(0,0,0,0.8);
-        }
-
-        /* --- SECTOR 4: PRIORITY OVERLAYS --- */
-        .master-settings {
-            position: fixed; inset: 0; z-index: var(--z-master);
-            background: rgba(0,0,0,0.99); display: none;
-            flex-direction: column; align-items: center; justify-content: center;
-            backdrop-filter: blur(100px);
-        }
-
-        .modal-base {
-            position: fixed; inset: 0; z-index: var(--z-modal);
-            background: rgba(0,0,0,0.95); display: none;
-            align-items: center; justify-content: center;
-        }
-
-        /* --- SECTOR 5: SCROLLBARS --- */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
-
+        ::-webkit-scrollbar { width: 3px; }
+        ::-webkit-scrollbar-thumb { background: var(--gold); }
     </style>
 </head>
 <body>
 
-    <div id="hyper-bg"><div class="liquid-orb"></div></div>
+    <div id="bg-frame-1" class="bg-system active" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2000')"></div>
+    <div id="bg-frame-2" class="bg-system" style="background-image: url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2000')"></div>
+    <div class="vignette"></div>
 
-    <div id="sector-settings" class="master-settings animate__animated">
-        <div class="max-w-2xl w-full p-20 glass-panel text-center">
-            <h2 class="text-4xl font-black tracking-[20px] mb-16 text-gold">TERMINAL SETTINGS</h2>
-            <div class="space-y-6">
-                <input id="set-display-name" class="w-full bg-white/5 border border-gold/30 p-6 text-gold outline-none focus:border-white transition-all" placeholder="MASTER ARCHITECT NAME">
-                <div class="grid grid-cols-2 gap-6">
-                    <button onclick="identity.link('google')" class="btn-star p-6 text-[9px]"><i class="fab fa-google mr-2"></i> GMAIL</button>
-                    <button onclick="identity.link('facebook')" class="btn-star p-6 text-[9px]"><i class="fab fa-facebook mr-2"></i> FACEBOOK</button>
-                </div>
-                <hr class="border-white/10 my-10">
-                <button id="exit-pov-final" onclick="pov.exit()" class="btn-star !bg-red-900 !text-white !border-none hidden p-6 text-[10px]">TERMINATE PERSPECTIVE OVERRIDE</button>
-                <button onclick="ui.closeSettings()" class="btn-star p-8 !bg-gold !text-black">SAVE & DISMISS</button>
-            </div>
+    <div id="cookie-banner" class="animate__animated animate__slideInUp">
+        <h3 class="text-2xl font-black tracking-[15px] mb-4 text-gold">SECURITY AUTHORIZATION</h3>
+        <p class="text-[9px] tracking-[4px] opacity-40 mb-10 text-center max-w-3xl uppercase">Encrypted IP Logging and Session Verification Required for Terminal Access.</p>
+        <button onclick="CoreSecurity.authorize()" class="btn-titan p-6 w-80">I ACCEPT PROTOCOL</button>
+    </div>
+
+    <div id="settings-portal" class="full-overlay z-[var(--z-settings)]">
+        <div class="max-w-xl w-full p-20 glass-panel animate__animated animate__zoomIn text-center">
+            <h2 class="text-3xl font-black tracking-[20px] mb-12">SYSTEM CORE</h2>
+            <p id="ip-address-log" class="text-[8px] tracking-[5px] text-gold/30 mb-12">IP: FETCHING...</p>
+            <input id="profile-name-input" class="input-titan mb-10" placeholder="ARCHITECT IDENTITY">
+            <button id="kill-pov-btn" onclick="POVManager.reset()" class="btn-titan !bg-red-900 !text-white !border-none hidden p-5 mb-6 text-[9px]">TERMINATE OVERRIDE</button>
+            <button onclick="UIManager.closeSettings()" class="btn-titan p-6 w-full !bg-gold !text-black">COMMIT ACCESS</button>
         </div>
     </div>
 
     <aside class="sidebar glass-panel animate__animated animate__fadeInLeft">
-        <div class="flex justify-between items-start mb-24">
-            <div>
+        <div class="mb-24">
+            <div class="flex justify-between items-center">
                 <h1 class="text-4xl font-black tracking-[15px] text-gold">TITAN</h1>
-                <p class="text-[8px] tracking-[8px] opacity-40 mt-4">OMNI-MONOLITH V.7</p>
+                <button onclick="UIManager.openSettings()" class="text-gold text-4xl hover:rotate-180 transition-all duration-700"><i class="fas fa-microchip"></i></button>
             </div>
-            <button onclick="ui.openSettings()" class="text-gold text-4xl hover:rotate-180 transition-transform duration-700">
-                <i class="fas fa-cog"></i>
-            </button>
+            <p class="text-[8px] tracking-[10px] opacity-20 mt-4 uppercase">Sovereign V9.1</p>
         </div>
 
-        <div id="auth-partition">
-            <input type="email" id="login-email" class="w-full bg-white/5 border border-white/10 p-6 mb-4 text-gold outline-none" placeholder="IDENTITY EMAIL">
-            <input type="password" id="login-pass" class="w-full bg-white/5 border border-white/10 p-6 mb-8 text-gold outline-none" placeholder="SECURITY KEY">
-            <button onclick="identity.login()" class="btn-star p-6">AUTHORIZE</button>
-            <div class="mt-8">
-                <button onclick="identity.link('google')" class="btn-star p-4 !text-[8px] opacity-50 hover:opacity-100">QUICK LINK GMAIL</button>
-            </div>
+        <div id="auth-partition" class="space-y-6">
+            <input type="email" id="auth-email" class="input-titan" placeholder="IDENTITY EMAIL">
+            <input type="password" id="auth-pass" class="input-titan" placeholder="SECURITY KEY">
+            <button onclick="IdentityHub.login()" class="btn-titan p-6">AUTHENTICATE</button>
         </div>
 
-        <div id="admin-partition" class="hidden animate__animated animate__fadeIn">
-            <div class="py-10 border-y border-gold/10 mb-10">
-                <h4 class="text-center text-[10px] tracking-[10px] text-gold font-bold">ARCHITECT COMMAND</h4>
+        <div id="admin-partition" class="hidden">
+            <div class="p-6 border-y border-gold/10 mb-10 text-center">
+                <span class="text-[9px] tracking-[12px] text-gold font-bold">VERIFIED ARCHITECT</span>
             </div>
-            <button onclick="ui.openModal('deploy-modal')" class="btn-star p-6 !border-gold !bg-gold/5">DEPLOY NEW ASSET</button>
-            <button onclick="identity.logout()" class="btn-star p-4 mt-10 !text-red-500 !border-red-900/30">DISCONNECT</button>
+            <button onclick="UIManager.openModal('deploy-modal')" class="btn-titan p-6 mb-4 !border-gold">DEPLOY ASSET</button>
+            <button onclick="IdentityHub.logout()" class="btn-titan p-4 mt-12 !text-red-500 !border-red-900/20">DISCONNECT</button>
         </div>
     </aside>
 
-    <main class="viewport">
-        <header class="mb-32">
-            <h2 id="view-mode-title" class="text-7xl font-thin tracking-tighter uppercase mb-2">Discovery</h2>
+    <main class="main-viewport">
+        <header class="mb-24 animate__animated animate__fadeIn">
+            <h2 id="interface-label" class="text-7xl font-thin tracking-tighter mb-4 uppercase">Global Grid</h2>
             <div class="w-32 h-1 bg-gold"></div>
         </header>
-        <div id="property-grid" class="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-16 pb-40"></div>
+        <div id="asset-mount" class="grid grid-cols-1 xl:grid-cols-2 gap-12 pb-40"></div>
     </main>
 
-    <div id="deploy-modal" class="modal-base">
-        <div class="glass-panel p-16 w-full max-w-4xl animate__animated animate__zoomIn">
-            <h3 class="text-3xl font-black tracking-[15px] mb-12 text-center">INITIALIZE ASSET</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                <input id="asset-name" class="w-full bg-white/5 border border-white/10 p-6 text-gold" placeholder="ASSET NAME">
-                <input id="asset-val" class="w-full bg-white/5 border border-white/10 p-6 text-gold" placeholder="VALUATION (EGP)">
-                <input id="asset-wa" class="w-full bg-white/5 border border-white/10 p-6 text-gold" placeholder="WHATSAPP (+20)">
-                <input id="asset-tg" class="w-full bg-white/5 border border-white/10 p-6 text-gold" placeholder="TELEGRAM">
-                <input id="asset-fb" class="w-full bg-white/5 border border-white/10 p-6 text-gold" placeholder="FACEBOOK LINK">
-                <input id="asset-loc" class="w-full bg-white/5 border border-white/10 p-6 text-gold" placeholder="GEOGRAPHIC LOC">
+    <div id="deploy-modal" class="full-overlay z-[var(--z-modal)]">
+        <div class="glass-panel p-20 w-full max-w-4xl animate__animated animate__fadeInDown">
+            <h3 id="modal-header" class="text-3xl font-black tracking-[10px] mb-12 text-center">ASSET INITIALIZATION</h3>
+            <input id="edit-id-buffer" type="hidden">
+            <div class="grid grid-cols-2 gap-6 mb-8">
+                <input id="field-title" class="input-titan" placeholder="TITLE">
+                <input id="field-price" class="input-titan" placeholder="VALUATION">
+                <input id="field-wa" class="input-titan" placeholder="WHATSAPP">
+                <input id="field-tg" class="input-titan" placeholder="TELEGRAM">
             </div>
-            <div class="flex gap-4">
-                <button onclick="dataStore.push()" class="btn-star flex-1 p-6 !bg-gold !text-black">DEPLOY</button>
-                <button onclick="ui.closeModal('deploy-modal')" class="btn-star flex-1 p-6">CANCEL</button>
+            <input id="field-fb" class="input-titan mb-10" placeholder="FACEBOOK LINK">
+            <div class="flex gap-6">
+                <button onclick="AssetManager.commit()" class="btn-titan flex-1 p-6 !bg-gold !text-black">COMMIT TO GRID</button>
+                <button onclick="UIManager.closeModal('deploy-modal')" class="btn-titan flex-1 p-6">ABORT</button>
             </div>
         </div>
     </div>
 
-    <div id="contact-modal" class="modal-base">
+    <div id="contact-modal" class="full-overlay z-[var(--z-modal)]">
         <div class="glass-panel p-20 max-w-lg w-full text-center">
-            <h3 class="text-2xl font-bold tracking-[15px] mb-16">COMMUNICATION</h3>
+            <h3 class="text-2xl font-bold tracking-[15px] mb-16">CONTACT HUB</h3>
             <div class="space-y-6">
-                <a id="link-wa" target="_blank" class="btn-star p-6 !text-green-500"><i class="fab fa-whatsapp mr-4"></i> WHATSAPP</a>
-                <a id="link-tg" target="_blank" class="btn-star p-6 !text-blue-400"><i class="fab fa-telegram mr-4"></i> TELEGRAM</a>
-                <a id="link-fb" target="_blank" class="btn-star p-6 !text-blue-700"><i class="fab fa-facebook mr-4"></i> MESSENGER</a>
+                <a id="wa-link" target="_blank" class="btn-titan p-6 !text-green-500"><i class="fab fa-whatsapp mr-4"></i> WHATSAPP</a>
+                <a id="tg-link" target="_blank" class="btn-titan p-6 !text-blue-400"><i class="fab fa-telegram mr-4"></i> TELEGRAM</a>
+                <a id="fb-link" target="_blank" class="btn-titan p-6 !text-blue-700"><i class="fab fa-facebook mr-4"></i> MESSENGER</a>
             </div>
-            <button onclick="ui.closeModal('contact-modal')" class="mt-12 opacity-30 text-[9px] tracking-[5px] uppercase">Back to Terminal</button>
+            <button onclick="UIManager.closeModal('contact-modal')" class="mt-16 opacity-20 text-[10px] tracking-[5px] uppercase">Return to Terminal</button>
         </div>
     </div>
 
-    <div id="pov-dock" class="fixed bottom-12 left-1/2 -translate-x-1/2 z-[pov] flex gap-8 p-6 glass-panel rounded-full animate__animated animate__fadeInUp">
-        <button onclick="pov.shift('BUYER')" class="btn-star !mb-0 !w-44 !py-4 !text-[10px]">BUYER POV</button>
-        <button onclick="pov.shift('AGENT')" class="btn-star !mb-0 !w-44 !py-4 !text-[10px]">AGENT POV</button>
+    <div id="pov-dock" class="fixed bottom-12 left-1/2 -translate-x-1/2 z-[100000] flex gap-6 p-4 glass-panel rounded-full">
+        <button onclick="POVManager.shift('BUYER')" class="btn-titan !mb-0 !w-40 !py-4 !text-[9px]">BUYER POV</button>
+        <button onclick="POVManager.shift('AGENT')" class="btn-titan !mb-0 !w-40 !py-4 !text-[9px]">AGENT POV</button>
     </div>
-
-    
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-        // --- PARTITION: CONFIGURATION ---
-        const firebaseConfig = { 
-            apiKey: "AIzaSyCkKmG3XSEDC2u_-HZYze8clabp6JLKf1g", 
-            authDomain: "futurehomeapp-fdad7.firebaseapp.com", 
-            projectId: "futurehomeapp-fdad7", 
-            storageBucket: "futurehomeapp-fdad7.appspot.com", 
-            messagingSenderId: "70607637960", 
-            appId: "1:70607637960:web:f11bbd6a3bc53cb4ab44fd" 
+        // CONFIG PARTITION
+        const fConfig = { apiKey: "AIzaSyCkKmG3XSEDC2u_-HZYze8clabp6JLKf1g", authDomain: "futurehomeapp-fdad7.firebaseapp.com", projectId: "futurehomeapp-fdad7", storageBucket: "futurehomeapp-fdad7.appspot.com", messagingSenderId: "70607637960", appId: "1:70607637960:web:f11bbd6a3bc53cb4ab44fd" };
+        const app = initializeApp(fConfig); const auth = getAuth(app); const db = getFirestore(app);
+        const MASTER_ID = "mohammedtaha9o.elghawaby@gmail.com";
+
+        // SEC 1: SECURITY (UNTOUCHABLE)
+        window.CoreSecurity = {
+            authorize: () => {
+                try {
+                    localStorage.setItem('titan_v9_auth', 'true');
+                    document.getElementById('cookie-banner').style.display = 'none';
+                } catch(e) { console.error("Security Breach in LocalStorage"); }
+            },
+            init: async () => {
+                if(!localStorage.getItem('titan_v9_auth')) document.getElementById('cookie-banner').style.display = 'flex';
+                try {
+                    const r = await fetch('https://api.ipify.org?format=json');
+                    const d = await r.json();
+                    document.getElementById('ip-address-log').innerText = `NODE IP: ${d.ip} | SECURE`;
+                } catch(e) { document.getElementById('ip-address-log').innerText = "IP LOG: OFFLINE"; }
+            }
         };
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const masterAdmin = "mohammedtaha9o.elghawaby@gmail.com";
 
-        // --- PARTITION: UI ENGINE ---
-        window.ui = {
-            openSettings: () => {
-                const s = document.getElementById('sector-settings');
-                s.style.display = 'flex';
-                s.classList.remove('animate__zoomOut');
-                s.classList.add('animate__zoomIn');
-            },
+        // SEC 2: UI MANAGER (UNTOUCHABLE)
+        window.UIManager = {
+            openSettings: () => { document.getElementById('settings-portal').style.display = 'flex'; },
             closeSettings: async () => {
-                const s = document.getElementById('sector-settings');
-                const name = document.getElementById('set-display-name').value;
-                if(auth.currentUser && name) {
-                    await updateProfile(auth.currentUser, { displayName: name });
-                }
-                s.classList.remove('animate__zoomIn');
-                s.classList.add('animate__zoomOut');
-                setTimeout(() => { s.style.display = 'none'; }, 500);
+                try {
+                    const n = document.getElementById('profile-name-input').value;
+                    if(auth.currentUser && n) await updateProfile(auth.currentUser, { displayName: n });
+                    document.getElementById('settings-portal').style.display = 'none';
+                } catch(e) { console.error("UI Commit Failure"); }
             },
-            openModal: (id) => { document.getElementById(id).style.display = 'flex'; },
+            openModal: (id, data = null) => {
+                document.getElementById(id).style.display = 'flex';
+                if(data) {
+                    document.getElementById('modal-header').innerText = "MODIFY ASSET";
+                    document.getElementById('edit-id-buffer').value = data.id;
+                    document.getElementById('field-title').value = data.title;
+                    document.getElementById('field-price').value = data.price;
+                    document.getElementById('field-wa').value = data.whatsapp;
+                    document.getElementById('field-tg').value = data.telegram;
+                    document.getElementById('field-fb').value = data.facebook;
+                } else {
+                    document.getElementById('modal-header').innerText = "ASSET INITIALIZATION";
+                    document.querySelectorAll('#deploy-modal input').forEach(i => i.value = '');
+                }
+            },
             closeModal: (id) => { document.getElementById(id).style.display = 'none'; }
         };
 
-        // --- PARTITION: IDENTITY ENGINE ---
-        window.identity = {
+        // SEC 3: IDENTITY (UNTOUCHABLE)
+        window.IdentityHub = {
             login: () => {
-                const email = document.getElementById('login-email').value;
-                const pass = document.getElementById('login-pass').value;
-                signInWithEmailAndPassword(auth, email, pass).catch(err => alert(err.message));
+                const e = document.getElementById('auth-email').value;
+                const p = document.getElementById('auth-pass').value;
+                signInWithEmailAndPassword(auth, e, p).catch(err => alert("AUTH_ERROR: " + err.message));
             },
-            logout: () => { signOut(auth).then(() => location.reload()); },
-            link: async (prov) => {
-                const provider = prov === 'google' ? new GoogleAuthProvider() : new FacebookAuthProvider();
-                await signInWithPopup(auth, provider).catch(err => alert(err.message));
-            }
+            logout: () => signOut(auth).then(() => location.reload())
         };
 
-        // --- PARTITION: POV ENGINE (FIXED & REBUILT) ---
-        window.pov = {
-            shift: (role) => {
-                document.getElementById('view-mode-title').innerText = `${role} VIEW`;
-                document.getElementById('exit-pov-final').classList.remove('hidden');
-                // Temporarily hide admin sector if Agent POV is active to simulate user experience
-                if(role === 'BUYER') document.getElementById('admin-partition').classList.add('hidden');
-                ui.openSettings();
-            },
-            exit: () => {
-                location.reload(); // Hard reset to restore architect state
-            }
-        };
-
-        // --- PARTITION: DATA ENGINE ---
-        window.dataStore = {
-            push: async () => {
+        // SEC 4: ASSET MANAGER (CRUD)
+        window.AssetManager = {
+            commit: async () => {
                 try {
-                    await addDoc(collection(db, 'properties'), {
-                        title: document.getElementById('asset-name').value,
-                        price: document.getElementById('asset-val').value,
-                        whatsapp: document.getElementById('asset-wa').value,
-                        telegram: document.getElementById('asset-tg').value,
-                        facebook: document.getElementById('asset-fb').value,
-                        location: document.getElementById('asset-loc').value,
-                        createdAt: serverTimestamp()
-                    });
-                    ui.closeModal('deploy-modal');
-                    // Reset inputs
-                    document.querySelectorAll('#deploy-modal input').forEach(i => i.value = '');
-                } catch(err) { alert(err.message); }
+                    const id = document.getElementById('edit-id-buffer').value;
+                    const data = {
+                        title: document.getElementById('field-title').value,
+                        price: document.getElementById('field-price').value,
+                        whatsapp: document.getElementById('field-wa').value,
+                        telegram: document.getElementById('field-tg').value,
+                        facebook: document.getElementById('field-fb').value,
+                        updatedAt: serverTimestamp()
+                    };
+                    if(id) {
+                        await updateDoc(doc(db, 'properties', id), data);
+                    } else {
+                        data.createdAt = serverTimestamp();
+                        await addDoc(collection(db, 'properties'), data);
+                    }
+                    UIManager.closeModal('deploy-modal');
+                } catch(e) { alert("DATA_ERROR: " + e.message); }
             },
-            renderContact: (wa, tg, fb) => {
-                document.getElementById('link-wa').href = `https://wa.me/${wa}`;
-                document.getElementById('link-tg').href = `https://t.me/${tg}`;
-                document.getElementById('link-fb').href = fb;
-                ui.openModal('contact-modal');
+            remove: async (id) => {
+                if(confirm("PERMANENTLY ERASE?")) await deleteDoc(doc(db, 'properties', id));
             }
         };
 
-        // --- PARTITION: SYSTEM OBSERVER ---
+        // SEC 5: POV MANAGER (FIXED)
+        window.POVManager = {
+            shift: (role) => {
+                document.getElementById('interface-label').innerText = role + " INTERFACE";
+                document.getElementById('kill-pov-btn').classList.remove('hidden');
+                if(role === 'BUYER') document.getElementById('admin-partition').classList.add('hidden');
+                UIManager.openSettings();
+            },
+            reset: () => location.reload()
+        };
+
+        // BOOT SEQUENCE
+        CoreSecurity.init();
         onAuthStateChanged(auth, (user) => {
             if(user) {
                 document.getElementById('auth-partition').classList.add('hidden');
-                document.getElementById('set-display-name').value = user.displayName || "";
-                
-                // Architect Check
-                if(user.email.toLowerCase() === masterAdmin) {
-                    document.getElementById('admin-partition').classList.remove('hidden');
-                }
+                document.getElementById('profile-name-input').value = user.displayName || "";
+                if(user.email.toLowerCase() === MASTER_ID) document.getElementById('admin-partition').classList.remove('hidden');
             }
         });
 
-        // --- PARTITION: REALTIME GRID ---
+        // Background Crossfade
+        let bgFlag = true;
+        setInterval(() => {
+            document.getElementById('bg-frame-1').classList.toggle('active', !bgFlag);
+            document.getElementById('bg-frame-2').classList.toggle('active', bgFlag);
+            bgFlag = !bgFlag;
+        }, 10000);
+
+        // Realtime Render
         onSnapshot(query(collection(db, 'properties'), orderBy('createdAt', 'desc')), (snap) => {
-            const grid = document.getElementById('property-grid');
-            grid.innerHTML = '';
-            snap.forEach(doc => {
-                const p = doc.data();
+            const mount = document.getElementById('asset-mount'); mount.innerHTML = '';
+            snap.forEach(d => {
+                const p = d.data(); const id = d.id;
+                const isMaster = auth.currentUser && auth.currentUser.email === MASTER_ID;
                 const card = document.createElement('div');
-                card.className = "card-asset animate__animated animate__fadeInUp";
+                card.className = "asset-card animate__animated animate__fadeInUp";
                 card.innerHTML = `
-                    <p class="text-[9px] tracking-[10px] text-gold/50 mb-6 uppercase">${p.location || 'GLOBAL'}</p>
-                    <h3 class="text-4xl font-black mb-10 tracking-widest uppercase">${p.title}</h3>
-                    <div class="flex justify-between items-end">
-                        <p class="text-2xl font-light">EGP ${p.price}</p>
-                        <button class="btn-star p-4 !text-[8px] !mb-0 w-40">CONNECT</button>
+                    <h4 class="text-4xl font-black mb-4 uppercase tracking-tighter">${p.title}</h4>
+                    <p class="text-2xl text-gold mb-12">EGP ${p.price}</p>
+                    <div class="flex gap-4">
+                        <button onclick="POVManager.contact('${p.whatsapp}','${p.telegram}','${p.facebook}')" class="btn-titan flex-1 p-4 !text-[8px]">CONNECT</button>
+                        ${isMaster ? `
+                            <button onclick="UIManager.openModal('deploy-modal', {id:'${id}', ...${JSON.stringify(p)}})" class="btn-titan !w-16 !p-4 !text-blue-400"><i class="fas fa-edit"></i></button>
+                            <button onclick="AssetManager.remove('${id}')" class="btn-titan !w-16 !p-4 !text-red-500"><i class="fas fa-trash"></i></button>
+                        ` : ''}
                     </div>
                 `;
-                card.onclick = () => dataStore.renderContact(p.whatsapp, p.telegram, p.facebook);
-                grid.appendChild(card);
+                mount.appendChild(card);
             });
         });
+
+        window.POVManager.contact = (wa, tg, fb) => {
+            document.getElementById('wa-link').href = `https://wa.me/${wa}`;
+            document.getElementById('tg-link').href = `https://t.me/${tg}`;
+            document.getElementById('fb-link').href = fb;
+            UIManager.openModal('contact-modal');
+        };
     </script>
 </body>
 </html>
