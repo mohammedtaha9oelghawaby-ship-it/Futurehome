@@ -3,172 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FUTURE HOME | OMNI-TITAN IDENTITY</title>
+    <title>FUTURE HOME | OMNI-TITAN MAX</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/ace.js"></script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;900&family=Noto+Sans+Arabic:wght@100;400;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;700;900&family=Noto+Sans+Arabic:wght@100;400;700;900&display=swap');
         
         :root {
             --gold: #c5a059;
-            --z-shield: 80000;
-            --z-settings: 100000; /* TOP PRIORITY */
-            --z-modal: 70000;
+            --glass: rgba(5, 5, 5, 0.95);
+            --z-bg: -1;
+            --z-main: 1000;
+            --z-modal: 50000;
+            --z-settings: 999999; /* ABSOLUTE PRIORITY */
         }
 
         body { font-family: 'Montserrat', sans-serif; background: #000; color: var(--gold); overflow: hidden; height: 100vh; margin: 0; }
         body.rtl { font-family: 'Noto Sans Arabic', sans-serif; direction: rtl; }
 
-        /* --- BACKGROUND ENGINE --- */
-        #bg-container { position: fixed; inset: 0; z-index: -2; }
-        .bg-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: 3s; filter: brightness(0.2); }
-        .bg-slide.active { opacity: 1; }
-
-        /* --- SOVEREIGN SETTINGS OVERLAY --- */
+        /* --- THE SETTINGS MONSTER --- */
         #settings-overlay {
-            position: fixed; inset: 0; z-index: var(--z-settings); background: rgba(5,5,5,0.98);
-            backdrop-filter: blur(60px); display: none; flex-direction: column; align-items: center; justify-content: center;
-            padding: 50px; border: 5px solid var(--gold);
+            position: fixed; inset: 0; z-index: var(--z-settings); background: rgba(0,0,0,0.99);
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            padding: 5vh 5vw; border: 4px solid var(--gold);
         }
 
-        /* --- SIDEBAR --- */
-        .sidebar { position: fixed; top: 0; left: 0; bottom: 0; width: 400px; background: rgba(5,5,5,0.95); border-right: 1px solid rgba(197,160,89,0.2); z-index: 1000; padding: 60px 40px; }
-        body.rtl .sidebar { left: auto; right: 0; border-right: none; border-left: 1px solid rgba(197,160,89,0.2); }
-        
-        /* --- BUTTONS --- */
-        .btn-titan { border: 1px solid rgba(197, 160, 89, 0.4); background: transparent; color: var(--gold); padding: 12px; font-size: 10px; text-transform: uppercase; letter-spacing: 3px; cursor: pointer; transition: 0.3s; font-weight: 900; width: 100%; display: block; margin-bottom: 12px; text-align: center; }
-        .btn-titan:hover { background: var(--gold); color: #000; box-shadow: 0 0 20px var(--gold); }
-        .btn-social { border-radius: 5px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 11px; }
+        /* --- THE SIDEBAR --- */
+        .sidebar {
+            position: fixed; top: 0; left: 0; bottom: 0; width: 450px;
+            background: var(--glass); border-right: 1px solid rgba(197,160,89,0.3);
+            z-index: var(--z-main); padding: 80px 50px; transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body.rtl .sidebar { left: auto; right: 0; border-right: none; border-left: 1px solid rgba(197,160,89,0.3); }
 
-        .modal-titan { position: fixed; inset: 0; z-index: var(--z-modal); background: rgba(0,0,0,0.98); display: none; flex-direction: column; padding: 60px; }
-        .hidden { display: none !important; }
+        /* --- BUTTON ARCHITECTURE --- */
+        .btn-titan {
+            border: 1px solid rgba(197, 160, 89, 0.5); background: transparent; color: var(--gold);
+            padding: 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 5px;
+            cursor: pointer; transition: 0.4s; font-weight: 900; width: 100%; display: block;
+            margin-bottom: 20px; text-align: center; position: relative; overflow: hidden;
+        }
+        .btn-titan:hover { background: var(--gold); color: #000; box-shadow: 0 0 40px rgba(197,160,89,0.4); transform: scale(1.02); }
+
+        /* --- MAIN VIEWPORT --- */
+        .main-viewport {
+            margin-left: 450px; padding: 100px; height: 100vh; overflow-y: scroll;
+            opacity: 0; transform: translateY(20px); transition: 1s;
+        }
+        body.rtl .main-viewport { margin-left: 0; margin-right: 450px; }
+        .main-viewport.active { opacity: 1; transform: translateY(0); }
+
+        /* --- MODALS --- */
+        .modal-screen {
+            position: fixed; inset: 0; z-index: var(--z-modal); background: rgba(0,0,0,0.95);
+            display: none; align-items: center; justify-content: center; padding: 40px;
+        }
+
+        .bg-slide {
+            position: fixed; inset: 0; background-size: cover; background-position: center;
+            opacity: 0; transition: 4s ease-in-out; filter: brightness(0.25) blur(2px); z-index: var(--z-bg);
+        }
+        .bg-slide.active { opacity: 1; }
+
+        /* Hide scrollbar but keep functionality */
+        ::-webkit-scrollbar { width: 0px; }
     </style>
 </head>
 <body id="bodyRoot">
 
     <div id="settings-overlay">
-        <h2 class="text-5xl font-black tracking-[20px] mb-12 uppercase">Terminal Settings</h2>
-        <div class="w-full max-w-md space-y-6">
-            <div>
-                <label class="text-[8px] tracking-[5px] opacity-50">PROFILE IDENTITY</label>
-                <input id="set-name" class="w-full bg-white/5 border border-white/10 p-4 mt-2 text-gold outline-none" placeholder="Enter Master Name">
+        <h2 data-en="SYSTEM SETTINGS" data-ar="إعدادات النظام" class="text-6xl font-black tracking-[20px] mb-16 text-center">SYSTEM SETTINGS</h2>
+        <div class="w-full max-w-2xl space-y-10">
+            <div class="space-y-4">
+                <label data-en="ARCHITECT NAME" data-ar="اسم المهندس" class="text-[10px] tracking-[10px] opacity-50 block">ARCHITECT NAME</label>
+                <input id="profile-name" class="w-full bg-white/5 border-b-2 border-gold/30 p-6 text-2xl text-gold outline-none focus:border-gold transition-all" placeholder="Enter Identity">
             </div>
-            <div class="flex gap-4">
-                <button onclick="linkAccount('google')" class="btn-titan flex-1 !border-blue-500 !text-blue-500"><i class="fab fa-google"></i> GMAIL</button>
-                <button onclick="linkAccount('facebook')" class="btn-titan flex-1 !border-blue-700 !text-blue-700"><i class="fab fa-facebook"></i> FACEBOOK</button>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <button onclick="linkService('google')" class="btn-titan !border-red-600 !text-red-600"><i class="fab fa-google mr-3"></i> GMAIL LINK</button>
+                <button onclick="linkService('facebook')" class="btn-titan !border-blue-600 !text-blue-600"><i class="fab fa-facebook mr-3"></i> FB LINK</button>
             </div>
-            <hr class="border-white/10 my-10">
-            <button id="leave-pov-btn" onclick="location.reload()" class="btn-titan !bg-red-900 !text-white !border-none hidden">LEAVE PERSPECTIVE</button>
-            <button onclick="toggleSettings()" class="btn-titan">CLOSE SETTINGS</button>
+
+            <button id="leave-pov-btn" onclick="location.reload()" class="btn-titan !bg-red-900 !text-white !border-none hidden">EXIT OVERRIDE PERSPECTIVE</button>
+            <button onclick="toggleSettings(false)" class="btn-titan !bg-gold !text-black">SAVE & CLOSE</button>
         </div>
     </div>
 
-    <div id="bg-container">
-        <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2000')"></div>
-        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2000')"></div>
-    </div>
+    <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2000')"></div>
+    <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2000')"></div>
 
     <aside class="sidebar">
-        <div class="flex justify-between items-center mb-16">
-            <h1 class="font-black tracking-[8px] text-lg">FUTURE HOME</h1>
-            <button onclick="toggleSettings()" class="text-gold text-xl hover:rotate-90 transition-transform"><i class="fas fa-cog"></i></button>
+        <div class="flex justify-between items-start mb-24">
+            <div>
+                <h1 data-en="FUTURE HOME" data-ar="منزل المستقبل" class="font-black tracking-[15px] text-3xl mb-2">FUTURE HOME</h1>
+                <p class="text-[8px] tracking-[8px] opacity-40">SOVEREIGN TERMINAL V.4</p>
+            </div>
+            <button onclick="toggleSettings(true)" class="text-gold text-3xl hover:rotate-180 transition-transform duration-700 p-4">
+                <i class="fas fa-cog"></i>
+            </button>
         </div>
 
-        <div id="auth-section">
-            <button onclick="loginWithProvider('google')" class="btn-titan btn-social mb-4 !border-white/20"><i class="fab fa-google"></i> LINK WITH GMAIL</button>
-            <button onclick="loginWithProvider('facebook')" class="btn-titan btn-social mb-8 !border-white/20"><i class="fab fa-facebook"></i> LINK WITH FACEBOOK</button>
-            <input type="email" id="email" class="w-full bg-white/5 border border-white/10 p-4 mb-2 text-xs text-gold outline-none" placeholder="EMAIL IDENTITY">
-            <input type="password" id="password" class="w-full bg-white/5 border border-white/10 p-4 mb-6 text-xs text-gold outline-none" placeholder="SECURITY KEY">
-            <button onclick="handleLogin()" class="btn-titan">AUTHORIZE</button>
+        <div id="auth-gate" class="space-y-6">
+            <input type="email" id="email" class="w-full bg-white/5 border border-white/10 p-6 text-sm text-gold outline-none" placeholder="IDENTITY EMAIL">
+            <input type="password" id="password" class="w-full bg-white/5 border border-white/10 p-6 text-sm text-gold outline-none" placeholder="SECURITY KEY">
+            <button onclick="login()" class="btn-titan !bg-gold/10">AUTHORIZE ACCESS</button>
         </div>
 
-        <div id="master-nav" class="hidden mt-10 space-y-4">
-            <button onclick="openModal('modal-new')" class="btn-titan">NEW LISTING</button>
-            <button onclick="openModal('modal-code')" class="btn-titan">ARCHITECT CODE</button>
-            <button onclick="openModal('modal-vault')" class="btn-titan">VAULT RECORDS</button>
-        </div>
+        <nav id="master-nav" class="hidden mt-10 space-y-6">
+            <button onclick="openModal('modal-new-listing')" class="btn-titan">DEPLOY NEW ASSET</button>
+            <button onclick="openModal('modal-vault')" class="btn-titan">ACCESS VAULT</button>
+        </nav>
+
+        <button onclick="logout()" class="absolute bottom-10 left-10 text-[10px] font-black tracking-[8px] text-red-700 uppercase">Disconnect</button>
     </aside>
 
-    <main id="main-viewport" class="ml-[400px] p-20 hidden">
-        <div id="listing-grid" class="grid grid-cols-1 md:grid-cols-2 gap-10"></div>
+    <main class="main-viewport" id="viewport">
+        <header class="mb-32">
+            <h2 id="view-title" class="text-8xl font-thin tracking-tighter uppercase mb-4">Discovery</h2>
+            <div class="w-24 h-1 bg-gold"></div>
+        </header>
+        <div id="listing-grid" class="grid grid-cols-1 xl:grid-cols-2 gap-16 pb-40"></div>
     </main>
 
-    <div class="fixed bottom-10 left-1/2 -translate-x-1/2 flex gap-4 z-[5000] bg-black/80 p-3 rounded-full border border-white/10">
-        <button onclick="switchPOV('buyer')" class="btn-titan !mb-0 !w-32 !p-3">BUYER</button>
-        <button onclick="switchPOV('agent')" class="btn-titan !mb-0 !w-32 !p-3">AGENT</button>
+    <div id="contact-modal" class="modal-screen">
+        <div class="bg-black border-2 border-gold p-20 text-center max-w-xl w-full">
+            <h3 class="text-3xl font-black tracking-[15px] mb-16 uppercase">Direct Feed</h3>
+            <div class="space-y-6">
+                <button id="wa-link" class="btn-titan !text-green-500 !border-green-500"><i class="fab fa-whatsapp text-2xl mr-6"></i> WHATSAPP</button>
+                <button id="tg-link" class="btn-titan !text-blue-400 !border-blue-400"><i class="fab fa-telegram text-2xl mr-6"></i> TELEGRAM</button>
+                <button id="fb-link" class="btn-titan !text-blue-600 !border-blue-600"><i class="fab fa-facebook-messenger text-2xl mr-6"></i> MESSENGER</button>
+            </div>
+            <button onclick="closeModal('contact-modal')" class="mt-12 opacity-30 tracking-[5px] uppercase text-xs">Return to Grid</button>
+        </div>
     </div>
 
-    <div id="modal-contact" class="fixed inset-0 z-[110000] bg-black/95 hidden items-center justify-center">
-        <div class="bg-black border border-gold p-12 text-center w-80">
-            <h3 class="mb-8 tracking-widest uppercase">Connect Via</h3>
-            <button id="link-wa" class="btn-titan !text-green-500 !border-green-500 mb-4"><i class="fab fa-whatsapp"></i> WHATSAPP</button>
-            <button id="link-tg" class="btn-titan !text-blue-400 !border-blue-400 mb-4"><i class="fab fa-telegram"></i> TELEGRAM</button>
-            <button id="link-fb" class="btn-titan !text-blue-700 !border-blue-700 mb-8"><i class="fab fa-facebook-messenger"></i> MESSENGER</button>
-            <button onclick="closeContact()" class="btn-titan opacity-50">CLOSE</button>
-        </div>
+    <div class="fixed bottom-12 left-1/2 -translate-x-1/2 z-[40000] bg-black/95 p-6 rounded-full border border-white/10 flex gap-8 backdrop-blur-xl">
+        <button onclick="setPOV('buyer')" class="btn-titan !mb-0 !w-40 !py-4">BUYER POV</button>
+        <button onclick="setPOV('agent')" class="btn-titan !mb-0 !w-40 !py-4">AGENT POV</button>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
         const config = { apiKey: "AIzaSyCkKmG3XSEDC2u_-HZYze8clabp6JLKf1g", authDomain: "futurehomeapp-fdad7.firebaseapp.com", projectId: "futurehomeapp-fdad7", storageBucket: "futurehomeapp-fdad7.appspot.com", messagingSenderId: "70607637960", appId: "1:70607637960:web:f11bbd6a3bc53cb4ab44fd" };
         const app = initializeApp(config); const auth = getAuth(app); const db = getFirestore(app);
+        const masterMail = "mohammedtaha9o.elghawaby@gmail.com";
 
-        // SETTINGS & POV LOGIC
-        window.toggleSettings = () => {
-            const s = document.getElementById('settings-overlay');
-            s.style.display = s.style.display === 'flex' ? 'none' : 'flex';
+        // --- STRESS-TESTED CORE FUNCTIONS ---
+        window.toggleSettings = (open) => {
+            const el = document.getElementById('settings-overlay');
+            el.style.display = open ? 'flex' : 'none';
+            if(!open && auth.currentUser) {
+                updateProfile(auth.currentUser, { displayName: document.getElementById('profile-name').value });
+            }
         };
 
-        window.switchPOV = (role) => {
+        window.openModal = (id) => { document.getElementById(id).style.display = 'flex'; };
+        window.closeModal = (id) => { document.getElementById(id).style.display = 'none'; };
+
+        window.setPOV = (role) => {
             document.getElementById('leave-pov-btn').classList.remove('hidden');
-            alert(`Switched to ${role} perspective. Use Settings to Exit.`);
+            toggleSettings(true);
+            alert(`PERSPECTIVE SHIFT: ${role.toUpperCase()}`);
         };
 
-        // SOCIAL CONNECTIVITY
         window.openContact = (wa, tg, fb) => {
-            document.getElementById('link-wa').onclick = () => window.open(`https://wa.me/${wa}`);
-            document.getElementById('link-tg').onclick = () => window.open(`https://t.me/${tg}`);
-            document.getElementById('link-fb').onclick = () => window.open(fb);
-            document.getElementById('modal-contact').style.display = 'flex';
-        };
-        window.closeContact = () => document.getElementById('modal-contact').style.display = 'none';
-
-        // ACCOUNT LINKING
-        window.loginWithProvider = async (provider) => {
-            const p = provider === 'google' ? new GoogleAuthProvider() : new FacebookAuthProvider();
-            try { await signInWithPopup(auth, p); } catch(e) { alert(e.message); }
+            document.getElementById('wa-link').onclick = () => window.open(`https://wa.me/${wa}`, '_blank');
+            document.getElementById('tg-link').onclick = () => window.open(`https://t.me/${tg}`, '_blank');
+            document.getElementById('fb-link').onclick = () => window.open(fb, '_blank');
+            openModal('contact-modal');
         };
 
-        // AUTH OBSERVER
+        window.linkService = async (prov) => {
+            const provider = prov === 'google' ? new GoogleAuthProvider() : new FacebookAuthProvider();
+            await signInWithPopup(auth, provider).catch(e => alert(e.message));
+        };
+
+        // --- OBSERVERS ---
         onAuthStateChanged(auth, (user) => {
             if(user) {
-                document.getElementById('auth-section').classList.add('hidden');
-                document.getElementById('main-viewport').classList.remove('hidden');
-                if(user.email === "mohammedtaha9o.elghawaby@gmail.com") document.getElementById('master-nav').classList.remove('hidden');
-                document.getElementById('set-name').value = user.displayName || "";
+                document.getElementById('auth-gate').classList.add('hidden');
+                document.getElementById('viewport').classList.add('active');
+                document.getElementById('profile-name').value = user.displayName || "";
+                if(user.email === masterMail) document.getElementById('master-nav').classList.remove('hidden');
             }
         });
 
-        // LISTING RENDERING WITH SOCIALS
+        window.login = () => signInWithEmailAndPassword(auth, email.value, password.value).catch(e => alert(e.message));
+        window.logout = () => signOut(auth).then(() => location.reload());
+
+        // --- DATA STREAM ---
         onSnapshot(query(collection(db, 'properties'), orderBy('createdAt', 'desc')), (snap) => {
             const grid = document.getElementById('listing-grid'); grid.innerHTML = '';
             snap.forEach(d => {
                 const p = d.data();
-                const card = document.createElement('div'); card.className = "bg-white/5 border border-gold/10 p-8 cursor-pointer hover:border-gold transition-all";
-                card.innerHTML = `<h4 class="text-xl font-black uppercase mb-4">${p.title}</h4><p class="mb-6 font-bold">EGP ${p.price}</p><button class="btn-titan !py-2 !text-[8px]">VIEW CONTACTS</button>`;
-                card.onclick = () => openContact(p.whatsapp || "2010...", p.telegram || "user", p.facebook || "#");
+                const card = document.createElement('div');
+                card.className = "bg-white/5 border border-white/10 p-12 hover:border-gold transition-all duration-500 group";
+                card.innerHTML = `
+                    <p class="text-[9px] tracking-[5px] mb-4 opacity-40 uppercase">${p.location || 'Global'}</p>
+                    <h3 class="text-4xl font-black mb-8 group-hover:text-white transition-colors uppercase">${p.title}</h3>
+                    <div class="flex justify-between items-end">
+                        <p class="text-2xl font-light">EGP ${p.price}</p>
+                        <button class="btn-titan !mb-0 !w-48 !py-3 !text-[9px]">CONNECT</button>
+                    </div>
+                `;
+                card.onclick = () => openContact(p.whatsapp, p.telegram, p.facebook);
                 grid.appendChild(card);
             });
         });
 
-        // Background Rotator
-        let cur = 0; setInterval(() => { const s = document.querySelectorAll('.bg-slide'); s[cur].classList.remove('active'); cur = (cur+1)%s.length; s[cur].classList.add('active'); }, 6000);
+        // Bkg Engine
+        let idx = 0; setInterval(() => {
+            const s = document.querySelectorAll('.bg-slide');
+            s[idx].classList.remove('active');
+            idx = (idx + 1) % s.length;
+            s[idx].classList.add('active');
+        }, 8000);
     </script>
 </body>
 </html>
