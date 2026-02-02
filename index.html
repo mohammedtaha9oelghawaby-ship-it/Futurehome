@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FUTURE HOME | OMNI-TITAN MAX</title>
+    <title>FUTURE HOME | HYPER-MONOLITH</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,216 +13,246 @@
         
         :root {
             --gold: #c5a059;
-            --glass: rgba(5, 5, 5, 0.95);
-            --z-bg: -1;
-            --z-main: 1000;
-            --z-modal: 50000;
-            --z-settings: 999999; /* ABSOLUTE PRIORITY */
+            --obsidian: #050505;
+            --z-settings: 999999;
+            --z-modal: 500000;
+            --z-sidebar: 10000;
         }
 
         body { font-family: 'Montserrat', sans-serif; background: #000; color: var(--gold); overflow: hidden; height: 100vh; margin: 0; }
         body.rtl { font-family: 'Noto Sans Arabic', sans-serif; direction: rtl; }
 
-        /* --- THE SETTINGS MONSTER --- */
+        /* --- THE SOVEREIGN SETTINGS --- */
         #settings-overlay {
             position: fixed; inset: 0; z-index: var(--z-settings); background: rgba(0,0,0,0.99);
             display: none; flex-direction: column; align-items: center; justify-content: center;
-            padding: 5vh 5vw; border: 4px solid var(--gold);
+            padding: 10vh 10vw; border: 8px solid var(--gold); backdrop-filter: blur(100px);
         }
 
-        /* --- THE SIDEBAR --- */
+        /* --- THE EXPANDED SIDEBAR --- */
         .sidebar {
-            position: fixed; top: 0; left: 0; bottom: 0; width: 450px;
-            background: var(--glass); border-right: 1px solid rgba(197,160,89,0.3);
-            z-index: var(--z-main); padding: 80px 50px; transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: fixed; top: 0; left: 0; bottom: 0; width: 520px;
+            background: rgba(5,5,5,0.99); border-right: 3px solid rgba(197,160,89,0.2);
+            z-index: var(--z-sidebar); padding: 100px 70px; transition: 0.5s ease;
         }
-        body.rtl .sidebar { left: auto; right: 0; border-right: none; border-left: 1px solid rgba(197,160,89,0.3); }
+        body.rtl .sidebar { left: auto; right: 0; border-right: none; border-left: 3px solid rgba(197,160,89,0.2); }
 
-        /* --- BUTTON ARCHITECTURE --- */
+        /* --- INDUSTRIAL BUTTONS --- */
         .btn-titan {
-            border: 1px solid rgba(197, 160, 89, 0.5); background: transparent; color: var(--gold);
-            padding: 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 5px;
-            cursor: pointer; transition: 0.4s; font-weight: 900; width: 100%; display: block;
-            margin-bottom: 20px; text-align: center; position: relative; overflow: hidden;
+            border: 2px solid rgba(197, 160, 89, 0.4); background: transparent; color: var(--gold);
+            padding: 30px; font-size: 13px; text-transform: uppercase; letter-spacing: 8px;
+            cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            font-weight: 900; width: 100%; display: block; margin-bottom: 30px; text-align: center;
         }
-        .btn-titan:hover { background: var(--gold); color: #000; box-shadow: 0 0 40px rgba(197,160,89,0.4); transform: scale(1.02); }
+        .btn-titan:hover { background: var(--gold); color: #000; transform: scale(1.03); box-shadow: 0 0 50px rgba(197,160,89,0.5); }
+        .btn-active { border-color: #fff; color: #fff; }
 
-        /* --- MAIN VIEWPORT --- */
-        .main-viewport {
-            margin-left: 450px; padding: 100px; height: 100vh; overflow-y: scroll;
-            opacity: 0; transform: translateY(20px); transition: 1s;
+        /* --- MODAL ENGINE --- */
+        .modal-container {
+            position: fixed; inset: 0; z-index: var(--z-modal); background: rgba(0,0,0,0.97);
+            display: none; align-items: center; justify-content: center; padding: 50px;
         }
-        body.rtl .main-viewport { margin-left: 0; margin-right: 450px; }
-        .main-viewport.active { opacity: 1; transform: translateY(0); }
-
-        /* --- MODALS --- */
-        .modal-screen {
-            position: fixed; inset: 0; z-index: var(--z-modal); background: rgba(0,0,0,0.95);
-            display: none; align-items: center; justify-content: center; padding: 40px;
+        .modal-content {
+            background: #080808; border: 1px solid var(--gold); padding: 80px;
+            width: 100%; max-width: 900px; max-height: 90vh; overflow-y: auto;
         }
 
-        .bg-slide {
-            position: fixed; inset: 0; background-size: cover; background-position: center;
-            opacity: 0; transition: 4s ease-in-out; filter: brightness(0.25) blur(2px); z-index: var(--z-bg);
-        }
+        .main-viewport { margin-left: 520px; padding: 120px; height: 100vh; overflow-y: auto; }
+        body.rtl .main-viewport { margin-left: 0; margin-right: 520px; }
+
+        .bg-slide { position: fixed; inset: 0; z-index: -1; background-size: cover; background-position: center; opacity: 0; transition: 4s; filter: brightness(0.15); }
         .bg-slide.active { opacity: 1; }
 
-        /* Hide scrollbar but keep functionality */
-        ::-webkit-scrollbar { width: 0px; }
+        input, select { background: rgba(255,255,255,0.04); border: 1px solid rgba(197,160,89,0.2); padding: 25px; color: var(--gold); width: 100%; margin-bottom: 25px; outline: none; font-size: 16px; }
+        input:focus { border-color: var(--gold); background: rgba(255,255,255,0.08); }
+
+        /* Scrollbar Stealth */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--gold); }
     </style>
 </head>
 <body id="bodyRoot">
 
     <div id="settings-overlay">
-        <h2 data-en="SYSTEM SETTINGS" data-ar="إعدادات النظام" class="text-6xl font-black tracking-[20px] mb-16 text-center">SYSTEM SETTINGS</h2>
-        <div class="w-full max-w-2xl space-y-10">
+        <h2 class="text-7xl font-black tracking-[25px] mb-20 text-center uppercase">System Settings</h2>
+        <div class="w-full max-w-2xl space-y-8">
             <div class="space-y-4">
-                <label data-en="ARCHITECT NAME" data-ar="اسم المهندس" class="text-[10px] tracking-[10px] opacity-50 block">ARCHITECT NAME</label>
-                <input id="profile-name" class="w-full bg-white/5 border-b-2 border-gold/30 p-6 text-2xl text-gold outline-none focus:border-gold transition-all" placeholder="Enter Identity">
+                <label class="text-[10px] tracking-[10px] opacity-40">MASTER IDENTITY</label>
+                <input id="display-name-field" placeholder="ARCHITECT NAME">
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <button onclick="linkService('google')" class="btn-titan !border-red-600 !text-red-600"><i class="fab fa-google mr-3"></i> GMAIL LINK</button>
-                <button onclick="linkService('facebook')" class="btn-titan !border-blue-600 !text-blue-600"><i class="fab fa-facebook mr-3"></i> FB LINK</button>
+            <div class="grid grid-cols-2 gap-8">
+                <button onclick="linkProvider('google')" class="btn-titan !border-blue-500 !text-blue-500"><i class="fab fa-google mr-4"></i> GMAIL</button>
+                <button onclick="linkProvider('facebook')" class="btn-titan !border-blue-800 !text-blue-800"><i class="fab fa-facebook mr-4"></i> FACEBOOK</button>
             </div>
-
-            <button id="leave-pov-btn" onclick="location.reload()" class="btn-titan !bg-red-900 !text-white !border-none hidden">EXIT OVERRIDE PERSPECTIVE</button>
-            <button onclick="toggleSettings(false)" class="btn-titan !bg-gold !text-black">SAVE & CLOSE</button>
+            <hr class="border-white/10 my-12">
+            <button id="exit-pov-btn" onclick="location.reload()" class="btn-titan !bg-red-900 !text-white !border-none hidden">EXIT PERSPECTIVE</button>
+            <button onclick="toggleSettings(false)" class="btn-titan !bg-gold !text-black">SAVE & RETURN</button>
         </div>
+    </div>
+
+    <aside class="sidebar">
+        <div class="flex justify-between items-center mb-32">
+            <div>
+                <h1 class="font-black tracking-[15px] text-3xl mb-2">FUTURE HOME</h1>
+                <p class="text-[9px] tracking-[9px] opacity-30">HYPER-MONOLITH V.5</p>
+            </div>
+            <button onclick="toggleSettings(true)" class="text-gold text-4xl hover:rotate-90 transition-transform duration-500"><i class="fas fa-cog"></i></button>
+        </div>
+
+        <div id="auth-box" class="space-y-6">
+            <button onclick="linkProvider('google')" class="btn-titan !border-white/20"><i class="fab fa-google mr-4"></i> LOGIN WITH GMAIL</button>
+            <div class="text-center opacity-10 tracking-[20px] text-xs py-4">OR</div>
+            <input type="email" id="email" placeholder="IDENTITY EMAIL">
+            <input type="password" id="password" placeholder="SECURITY KEY">
+            <button onclick="handleLogin()" class="btn-titan">AUTHORIZE ACCESS</button>
+        </div>
+
+        <div id="master-controls" class="hidden space-y-6">
+            <div class="bg-gold/5 border border-gold/10 p-8 text-center mb-12">
+                <h4 class="text-[10px] tracking-[8px] font-black uppercase">Architect Terminal</h4>
+            </div>
+            <button onclick="openModal('modal-create')" class="btn-titan !border-gold !bg-gold/10">
+                <i class="fas fa-plus mr-4"></i> NEW LISTING
+            </button>
+            <button onclick="openModal('modal-vault')" class="btn-titan">VAULT ACCESS</button>
+        </div>
+
+        <button onclick="logout()" class="absolute bottom-10 left-10 text-[10px] font-black text-red-700 tracking-[8px] uppercase">Disconnect</button>
+    </aside>
+
+    <main class="main-viewport">
+        <div id="property-grid" class="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-20 pb-40"></div>
+    </main>
+
+    <div id="modal-create" class="modal-container">
+        <div class="modal-content">
+            <h3 class="text-4xl font-black mb-16 tracking-[15px] uppercase">Deploy Asset</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <input id="p-title" placeholder="TITLE">
+                <input id="p-price" placeholder="PRICE">
+                <input id="p-loc" placeholder="LOCATION">
+                <input id="p-wa" placeholder="WHATSAPP">
+                <input id="p-tg" placeholder="TELEGRAM">
+                <input id="p-fb" placeholder="FB LINK">
+            </div>
+            <button onclick="deployAsset()" class="btn-titan !bg-gold !text-black mt-10">CONFIRM DEPLOYMENT</button>
+            <button onclick="closeModal('modal-create')" class="btn-titan">CANCEL</button>
+        </div>
+    </div>
+
+    <div id="modal-contact" class="modal-container">
+        <div class="modal-content text-center max-w-md">
+            <h3 class="text-3xl font-black mb-16 tracking-[10px]">CONNECT</h3>
+            <div class="space-y-6">
+                <a id="wa-btn" target="_blank" class="btn-titan !text-green-500 !border-green-500">WHATSAPP</a>
+                <a id="tg-btn" target="_blank" class="btn-titan !text-blue-400 !border-blue-400">TELEGRAM</a>
+                <a id="fb-btn" target="_blank" class="btn-titan !text-blue-700 !border-blue-700">FACEBOOK</a>
+            </div>
+            <button onclick="closeModal('modal-contact')" class="mt-12 opacity-20 text-xs tracking-[5px]">CLOSE FEED</button>
+        </div>
+    </div>
+
+    <div class="fixed bottom-12 left-1/2 -translate-x-1/2 z-[50000] bg-black/95 p-6 rounded-full border border-white/10 flex gap-8">
+        <button onclick="shiftPOV('buyer')" class="btn-titan !mb-0 !w-40 !py-4 !text-[10px]">BUYER POV</button>
+        <button onclick="shiftPOV('agent')" class="btn-titan !mb-0 !w-40 !py-4 !text-[10px]">AGENT POV</button>
     </div>
 
     <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2000')"></div>
     <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2000')"></div>
 
-    <aside class="sidebar">
-        <div class="flex justify-between items-start mb-24">
-            <div>
-                <h1 data-en="FUTURE HOME" data-ar="منزل المستقبل" class="font-black tracking-[15px] text-3xl mb-2">FUTURE HOME</h1>
-                <p class="text-[8px] tracking-[8px] opacity-40">SOVEREIGN TERMINAL V.4</p>
-            </div>
-            <button onclick="toggleSettings(true)" class="text-gold text-3xl hover:rotate-180 transition-transform duration-700 p-4">
-                <i class="fas fa-cog"></i>
-            </button>
-        </div>
-
-        <div id="auth-gate" class="space-y-6">
-            <input type="email" id="email" class="w-full bg-white/5 border border-white/10 p-6 text-sm text-gold outline-none" placeholder="IDENTITY EMAIL">
-            <input type="password" id="password" class="w-full bg-white/5 border border-white/10 p-6 text-sm text-gold outline-none" placeholder="SECURITY KEY">
-            <button onclick="login()" class="btn-titan !bg-gold/10">AUTHORIZE ACCESS</button>
-        </div>
-
-        <nav id="master-nav" class="hidden mt-10 space-y-6">
-            <button onclick="openModal('modal-new-listing')" class="btn-titan">DEPLOY NEW ASSET</button>
-            <button onclick="openModal('modal-vault')" class="btn-titan">ACCESS VAULT</button>
-        </nav>
-
-        <button onclick="logout()" class="absolute bottom-10 left-10 text-[10px] font-black tracking-[8px] text-red-700 uppercase">Disconnect</button>
-    </aside>
-
-    <main class="main-viewport" id="viewport">
-        <header class="mb-32">
-            <h2 id="view-title" class="text-8xl font-thin tracking-tighter uppercase mb-4">Discovery</h2>
-            <div class="w-24 h-1 bg-gold"></div>
-        </header>
-        <div id="listing-grid" class="grid grid-cols-1 xl:grid-cols-2 gap-16 pb-40"></div>
-    </main>
-
-    <div id="contact-modal" class="modal-screen">
-        <div class="bg-black border-2 border-gold p-20 text-center max-w-xl w-full">
-            <h3 class="text-3xl font-black tracking-[15px] mb-16 uppercase">Direct Feed</h3>
-            <div class="space-y-6">
-                <button id="wa-link" class="btn-titan !text-green-500 !border-green-500"><i class="fab fa-whatsapp text-2xl mr-6"></i> WHATSAPP</button>
-                <button id="tg-link" class="btn-titan !text-blue-400 !border-blue-400"><i class="fab fa-telegram text-2xl mr-6"></i> TELEGRAM</button>
-                <button id="fb-link" class="btn-titan !text-blue-600 !border-blue-600"><i class="fab fa-facebook-messenger text-2xl mr-6"></i> MESSENGER</button>
-            </div>
-            <button onclick="closeModal('contact-modal')" class="mt-12 opacity-30 tracking-[5px] uppercase text-xs">Return to Grid</button>
-        </div>
-    </div>
-
-    <div class="fixed bottom-12 left-1/2 -translate-x-1/2 z-[40000] bg-black/95 p-6 rounded-full border border-white/10 flex gap-8 backdrop-blur-xl">
-        <button onclick="setPOV('buyer')" class="btn-titan !mb-0 !w-40 !py-4">BUYER POV</button>
-        <button onclick="setPOV('agent')" class="btn-titan !mb-0 !w-40 !py-4">AGENT POV</button>
-    </div>
+    
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
         const config = { apiKey: "AIzaSyCkKmG3XSEDC2u_-HZYze8clabp6JLKf1g", authDomain: "futurehomeapp-fdad7.firebaseapp.com", projectId: "futurehomeapp-fdad7", storageBucket: "futurehomeapp-fdad7.appspot.com", messagingSenderId: "70607637960", appId: "1:70607637960:web:f11bbd6a3bc53cb4ab44fd" };
         const app = initializeApp(config); const auth = getAuth(app); const db = getFirestore(app);
         const masterMail = "mohammedtaha9o.elghawaby@gmail.com";
 
-        // --- STRESS-TESTED CORE FUNCTIONS ---
+        // --- CORE STATE ENGINE ---
         window.toggleSettings = (open) => {
-            const el = document.getElementById('settings-overlay');
-            el.style.display = open ? 'flex' : 'none';
+            document.getElementById('settings-overlay').style.display = open ? 'flex' : 'none';
             if(!open && auth.currentUser) {
-                updateProfile(auth.currentUser, { displayName: document.getElementById('profile-name').value });
+                const newName = document.getElementById('display-name-field').value;
+                if(newName) updateProfile(auth.currentUser, { displayName: newName });
             }
         };
 
-        window.openModal = (id) => { document.getElementById(id).style.display = 'flex'; };
-        window.closeModal = (id) => { document.getElementById(id).style.display = 'none'; };
+        window.openModal = (id) => document.getElementById(id).style.display = 'flex';
+        window.closeModal = (id) => document.getElementById(id).style.display = 'none';
 
-        window.setPOV = (role) => {
-            document.getElementById('leave-pov-btn').classList.remove('hidden');
+        window.shiftPOV = (role) => {
+            document.getElementById('exit-pov-btn').classList.remove('hidden');
             toggleSettings(true);
-            alert(`PERSPECTIVE SHIFT: ${role.toUpperCase()}`);
+            alert(`SYSTEM SHIFT: ${role.toUpperCase()} MODE ACTIVE`);
         };
 
-        window.openContact = (wa, tg, fb) => {
-            document.getElementById('wa-link').onclick = () => window.open(`https://wa.me/${wa}`, '_blank');
-            document.getElementById('tg-link').onclick = () => window.open(`https://t.me/${tg}`, '_blank');
-            document.getElementById('fb-link').onclick = () => window.open(fb, '_blank');
-            openModal('contact-modal');
-        };
-
-        window.linkService = async (prov) => {
-            const provider = prov === 'google' ? new GoogleAuthProvider() : new FacebookAuthProvider();
+        window.linkProvider = async (p) => {
+            const provider = p === 'google' ? new GoogleAuthProvider() : new FacebookAuthProvider();
             await signInWithPopup(auth, provider).catch(e => alert(e.message));
+        };
+
+        // --- DATA DEPLOYMENT ---
+        window.deployAsset = async () => {
+            await addDoc(collection(db, 'properties'), {
+                title: document.getElementById('p-title').value,
+                price: document.getElementById('p-price').value,
+                location: document.getElementById('p-loc').value,
+                whatsapp: document.getElementById('p-wa').value,
+                telegram: document.getElementById('p-tg').value,
+                facebook: document.getElementById('p-fb').value,
+                createdAt: serverTimestamp()
+            });
+            closeModal('modal-create');
         };
 
         // --- OBSERVERS ---
         onAuthStateChanged(auth, (user) => {
             if(user) {
-                document.getElementById('auth-gate').classList.add('hidden');
-                document.getElementById('viewport').classList.add('active');
-                document.getElementById('profile-name').value = user.displayName || "";
-                if(user.email === masterMail) document.getElementById('master-nav').classList.remove('hidden');
+                document.getElementById('auth-box').classList.add('hidden');
+                document.getElementById('display-name-field').value = user.displayName || "";
+                if(user.email.toLowerCase() === masterMail) {
+                    document.getElementById('master-controls').classList.remove('hidden');
+                }
             }
         });
 
-        window.login = () => signInWithEmailAndPassword(auth, email.value, password.value).catch(e => alert(e.message));
+        window.handleLogin = () => signInWithEmailAndPassword(auth, email.value, password.value).catch(e => alert(e.message));
         window.logout = () => signOut(auth).then(() => location.reload());
 
-        // --- DATA STREAM ---
+        // --- RENDER ENGINE ---
         onSnapshot(query(collection(db, 'properties'), orderBy('createdAt', 'desc')), (snap) => {
-            const grid = document.getElementById('listing-grid'); grid.innerHTML = '';
+            const grid = document.getElementById('property-grid'); grid.innerHTML = '';
             snap.forEach(d => {
                 const p = d.data();
                 const card = document.createElement('div');
-                card.className = "bg-white/5 border border-white/10 p-12 hover:border-gold transition-all duration-500 group";
+                card.className = "bg-white/5 border border-white/10 p-16 hover:border-gold transition-all duration-700 cursor-pointer group";
                 card.innerHTML = `
-                    <p class="text-[9px] tracking-[5px] mb-4 opacity-40 uppercase">${p.location || 'Global'}</p>
-                    <h3 class="text-4xl font-black mb-8 group-hover:text-white transition-colors uppercase">${p.title}</h3>
+                    <p class="text-[10px] tracking-[8px] opacity-40 mb-6 uppercase">${p.location || 'Premium'}</p>
+                    <h3 class="text-5xl font-black mb-10 group-hover:text-white transition-colors uppercase">${p.title}</h3>
                     <div class="flex justify-between items-end">
-                        <p class="text-2xl font-light">EGP ${p.price}</p>
-                        <button class="btn-titan !mb-0 !w-48 !py-3 !text-[9px]">CONNECT</button>
+                        <p class="text-3xl font-light">EGP ${p.price}</p>
+                        <button class="btn-titan !mb-0 !w-56 !py-4 !text-[10px]">CONNECT</button>
                     </div>
                 `;
-                card.onclick = () => openContact(p.whatsapp, p.telegram, p.facebook);
+                card.onclick = () => {
+                    document.getElementById('wa-btn').href = `https://wa.me/${p.whatsapp}`;
+                    document.getElementById('tg-btn').href = `https://t.me/${p.telegram}`;
+                    document.getElementById('fb-btn').href = p.facebook;
+                    openModal('modal-contact');
+                };
                 grid.appendChild(card);
             });
         });
 
-        // Bkg Engine
-        let idx = 0; setInterval(() => {
-            const s = document.querySelectorAll('.bg-slide');
-            s[idx].classList.remove('active');
-            idx = (idx + 1) % s.length;
-            s[idx].classList.add('active');
-        }, 8000);
+        let cur = 0; setInterval(() => {
+            const slides = document.querySelectorAll('.bg-slide');
+            slides[cur].classList.remove('active');
+            cur = (cur + 1) % slides.length;
+            slides[cur].classList.add('active');
+        }, 9000);
     </script>
 </body>
 </html>
